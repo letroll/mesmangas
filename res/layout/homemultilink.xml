@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="50dip"
+	android:background="#666666" android:paddingTop="3dip">
+	<ImageView android:id="@+id/buttonLeft" android:layout_width="50dip"
+		android:layout_height="50dip" android:layout_alignParentLeft="true"
+		android:paddingLeft="3dip" android:scaleType="centerInside"
+		android:clickable="true" android:src="@drawable/before" />
+	<ViewFlipper android:id="@+id/flipper"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true" android:layout_centerVertical="true"
+		android:flipInterval="3200" android:layout_marginBottom="20dip">
+		<TextView android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:gravity="center_horizontal"
+			android:textSize="20sp" android:textStyle="bold" android:text="@string/afficherlesite"/>
+		<TextView android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:gravity="center_horizontal"
+			android:textSize="20sp" android:textStyle="bold" android:text="@string/evaluer" />
+	</ViewFlipper>
+	<ImageView android:id="@+id/buttonRight"
+		android:layout_width="50dip" android:layout_height="50dip"
+		android:layout_alignParentRight="true" android:paddingRight="3dip"
+		android:scaleType="centerInside" android:clickable="true" android:src="@drawable/next" />
+</RelativeLayout>

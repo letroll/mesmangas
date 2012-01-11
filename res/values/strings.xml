@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">mesmangas</string>
+	<string name="ajout">add</string>
+	<string name="afficher">view</string>
+	<string name="vider">empty the cache</string>
+	<string name="preferences">preferences</string>
+	<string name="affichersd">View from the sd (Beta)</string>
+	<string name="francais">French</string>
+	<string name="anglais">English</string>
+	<string name="partager">Share application</string>
+	<string name="netnecessaire">internet access is required</string>
+	<string name="imagenondisponible">Image unavailable :-s</string>
+	<string name="recuperationfinie">recovery finished</string>
+	<string name="dernierepage">Last page of chapter</string>
+	<string name="premierepage">first page of chapter</string>
+	<string name="pasdepage">no page to display sorry</string>
+	<string name="selectionpremierepage">Select desired image of the chapter</string>
+	<string name="vidagecache">cleaning the cache</string>
+	<string name="appuislongsurmangapoursuppr">Make a long press on a manga for delete it</string>
+	<string name="mangasupprime">manga deleted</string>
+	<string name="appuislongsurchapitrepoursuppr">Make a long press on a chapter for delete it
+	</string>
+	<string name="problemelorsduchargement">A problem occurred while loading</string>
+	<string name="paysage">landscape</string>
+	<string name="automatique">automatic</string>
+	<string name="active">activated</string>
+	<string name="desactive">disabled</string>
+	<string name="pub">advertising</string>
+	<string name="pdtlalecture">during reading</string>
+	<string name="astuces">tips</string>
+	<string name="pleinecran">fullscreen</string>
+	<string name="glisser">Drag to change pages ( beta )</string>
+	<string name="policeperso">use custom font</string>
+	<string name="evaluer"> rate </string>
+	<string name="remindmelater">Remind me later</string>
+	<string name="nonmerci">No, thanks</string>
+	<string name="sivousaimez">If you enjoy using </string>
+	<string name="mercipourvotresoutien">, please take a moment to rate it. Thanks for your
+		support!</string>
+	<string name="contacterledev">Contact the developer</string>
+	<string name="chargement">Loading</string>
+	<string name="fermer">close</string>
+	<string name="miseajour">update</string>
+	<string name="ordredeschapitres">Order of the chapters</string>
+	<string name="normal">normal</string>
+	<string name="inverse">inverted</string>
+	<string name="afficherlesite">view website</string>
+	<string name="sdnecessaire">This application requires a memory card (SD) to
+		function</string>
+	<string name="rechercher">search</string>
+	<string name="espagnole">Spanish</string>
+	<string name="miseajour2">An update of the application is available! Update?
+	</string>
+	<string name="oui">yes</string>
+	<string name="non">no</string>
+</resources>
