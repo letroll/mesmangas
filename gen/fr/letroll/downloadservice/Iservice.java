@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: /home/letroll/Dropbox/Workspace/mesmangas/src/fr/letroll/downloadservice/Iservice.aidl
+ * Original file: C:\\Users\\julien\\Dropbox\\Workspace\\mesmangas\\src\\fr\\letroll\\downloadservice\\Iservice.aidl
  */
 package fr.letroll.downloadservice;
 public interface Iservice extends android.os.IInterface

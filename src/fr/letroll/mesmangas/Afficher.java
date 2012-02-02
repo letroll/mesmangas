@@ -15,7 +15,6 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.Vibrator;

@@ -7,7 +7,7 @@
 		android:allowClearUserData="true"
 		android:icon="@drawable/icon"
 		android:label="@string/app_name"
-		android:name="monApplication"
+		android:name="roboguice.application.RoboApplication"
 		android:theme="@style/Theme.IOSched" >
 		<activity
 			android:label="@string/app_name"

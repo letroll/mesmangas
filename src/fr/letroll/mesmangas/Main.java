@@ -2,6 +2,8 @@ package fr.letroll.mesmangas;
 
 import java.io.File;
 
+import roboguice.inject.InjectView;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -23,16 +25,18 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 import fr.letroll.framework.FileLt;
 import fr.letroll.framework.IntentLt;
-import fr.letroll.framework.Notification;
 import fr.letroll.framework.SystemInformation;
 import fr.letroll.framework.Web;
 
 public class Main extends Activity implements OnClickListener {
     private File ls;
+    
+    @InjectView(R.id.buttonLeft) ImageView before;
+    @InjectView(R.id.buttonRight) ImageView next;
+//    @InjectView(R.id.flipper) ViewFlipper mFlipper;
     private ViewFlipper mFlipper;
-    private ImageView next, before;
     private String path, mail;
-
+    
     private SharedPreferences preferences;
     private Boolean policeperso;
     private static final int PICKFILE_RESULT_CODE = 5000;
@@ -118,14 +122,12 @@ public class Main extends Activity implements OnClickListener {
             b6.setTextSize(25);
         }
 
-        mFlipper = ((ViewFlipper) this.findViewById(R.id.flipper));
-        mFlipper.startFlipping();
+        mFlipper = (ViewFlipper) findViewById(R.id.flipper);
         mFlipper.setInAnimation(this, R.anim.push_left_in);
         mFlipper.setOutAnimation(this, R.anim.push_left_out);
-        next = (ImageView) this.findViewById(R.id.buttonRight);
-        before = (ImageView) this.findViewById(R.id.buttonLeft);
-        next.setOnClickListener(this);
-        before.setOnClickListener(this);
+        mFlipper.startFlipping();
+//        next.setOnClickListener(Main.this);
+//        before.setOnClickListener(this);
         mFlipper.setOnClickListener(this);
 
         // cache la fleche retour pour main
