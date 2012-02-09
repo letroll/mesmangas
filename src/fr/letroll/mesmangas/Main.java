@@ -2,7 +2,7 @@ package fr.letroll.mesmangas;
 
 import java.io.File;
 
-import roboguice.activity.RoboTabActivity;
+import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -20,295 +20,285 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 import fr.letroll.framework.FileLt;
 import fr.letroll.framework.IntentLt;
+import fr.letroll.framework.Notification;
 import fr.letroll.framework.SystemInformation;
 import fr.letroll.framework.Web;
 
-public class Main extends RoboTabActivity {
-	private File ls;
+public class Main extends RoboActivity {
+    private File ls;
 
-	@InjectView(R.id.buttonLeft)
-	ImageView before;
-	@InjectView(R.id.buttonRight)
-	ImageView next;
-	@InjectView(R.id.flipper)
-	ViewFlipper mFlipper;
-	// private ViewFlipper mFlipper;
-	private String path, mail;
+    @InjectView(R.id.buttonLeft) ImageView before;
+    @InjectView(R.id.buttonRight) ImageView next;
+    @InjectView(R.id.flipper) ViewFlipper mFlipper;
+    @InjectView(R.id.actionbar) LinearLayout ll;
+    @InjectView(R.id.btn_title_back) ImageView imback;
+    @InjectView(R.id.action_one_button) Button b1;
+    @InjectView(R.id.action_two_button) Button b2;
+    @InjectView(R.id.action_three_button) Button b3;
+    @InjectView(R.id.action_four_button) Button b4;
+    @InjectView(R.id.action_five_button) Button b5;
+    @InjectView(R.id.action_six_button) Button b6;
 
-	private SharedPreferences preferences;
-	private Boolean policeperso;
-	private static final int PICKFILE_RESULT_CODE = 5000;
+    private String path, mail;
 
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.dashboard);
-		ls = this.getFilesDir();
-		path = ls.getAbsolutePath() + "/mesmangas";
-		AppRater.app_launched(this);
+    private SharedPreferences preferences;
+    private Boolean policeperso;
+    private static final int PICKFILE_RESULT_CODE = 5000;
 
-		preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		policeperso = preferences.getBoolean("policeperso", false);
-		mail = preferences.getString("mail", "");
-		int version = preferences.getInt("version", 0);
-		boolean tuto = preferences.getBoolean("tuto1", true);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.dashboard);
+        ls = this.getFilesDir();
+        path = ls.getAbsolutePath() + "/mesmangas";
+        AppRater.app_launched(this);
 
-		if (tuto) {
-			final Dialog monTuto = new Dialog(this);
-			monTuto.setContentView(R.layout.tuto_dialog1);
-			Button b1 = (Button) monTuto.findViewById(R.id.button1);
-			b1.setText("quitter");
-			b1.setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					monTuto.cancel();
-				}
-			});
-			TextView t1 = (TextView) monTuto.findViewById(R.id.textView2);
-			t1.setText("(cette application nÃ©cessite un accÃ¨s Ã  internet, lâ€™utilisation du wifi est conseillÃ©.) Bonjour et bienvenue dans mesmangas," + "faites dÃ©filer cette page vers le haut pour apprendre Ã  utiliser lâ€™application.pour commencer, appuyer sur ");
-			TextView t2 = (TextView) monTuto.findViewById(R.id.textView1);
-			t2.setText("selectionner la langue Ã  votre convenance, et enfin patientÃ©." + "Lâ€™application Mesmangas va chercher tous les titres disponibles sur le site internet sÃ©lectionnÃ©." + "Votre manga trouvÃ©, appuyer sur son nom pour lâ€™ajouter Ã  votre liste de lecture." + "il ne vous reste plus quâ€™Ã  regarder vos manga en appuyant sur");
-			monTuto.show();
-			SharedPreferences.Editor editor = preferences.edit();
-			editor.putBoolean("tuto1", false).commit();
-		}
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        policeperso = preferences.getBoolean("policeperso", false);
+        mail = preferences.getString("mail", "");
+        int version = preferences.getInt("version", 0);
+        boolean tuto = preferences.getBoolean("tuto1", true);
 
-		if (version != SystemInformation.getVersion(this)) {
-			FileLt.recursiveDelete(new File("sdcard/.mesmangas"));
-			FileLt.recursiveDelete(new File(path));
-			AlertDialog alerte = new AlertDialog.Builder(Main.this).setIcon(R.drawable.ic_title_refresh).setTitle(R.string.miseajour).setMessage("* reparation de la rÃ©cupÃ©ration depuis animes-story suite aux mises Ã  jour du site\n\n" + "* correction d'un bug lors de l'affichage des pages\n\n" + "* ajout d'un site source espagnol\n" + "* Je recherche des personnes dÃ©sirant m'aider Ã  la traduction de l'application dans d'autres langues\n\n" + "* Je cherche aussi un nouveau logo pour l'application, vous pouvez m'envoyÃ© vos idÃ©e ;-)")
-			        .setNeutralButton(R.string.fermer, new DialogInterface.OnClickListener() {
-				        public void onClick(DialogInterface dialog, int whichButton) {
-					        SharedPreferences.Editor editor = preferences.edit();
-					        editor.putInt("version", SystemInformation.getVersion(Main.this)).commit();
-					        editor.putString("mail", SystemInformation.getMailsUser(Main.this).get(0)).commit();
-				        }
-			        }).create();
-			alerte.show();
-		}
-		//
-		// else {
-		// SharedPreferences.Editor editor = preferences.edit();
-		// editor.putInt("version", 0).commit();
-		// }
+        if (tuto) {
+            final Dialog monTuto = new Dialog(this);
+            monTuto.setContentView(R.layout.tuto_dialog1);
+            Button b1 = (Button) monTuto.findViewById(R.id.button1);
+            b1.setText("quitter");
+            b1.setOnClickListener(new OnClickListener() {
+                public void onClick(View v) {
+                    monTuto.cancel();
+                }
+            });
 
-		if (policeperso) {
-			Button b1 = (Button) findViewById(R.id.action_one_button);
-			Button b2 = (Button) findViewById(R.id.action_two_button);
-			Button b3 = (Button) findViewById(R.id.action_three_button);
-			Button b4 = (Button) findViewById(R.id.action_four_button);
-			Button b5 = (Button) findViewById(R.id.action_five_button);
-			Button b6 = (Button) findViewById(R.id.action_six_button);
+            TextView t1 = (TextView) findViewById(R.id.textView2);
+            TextView t2 = (TextView) findViewById(R.id.textView1);
+            t1.setText("(cette application nécessite un accés à  internet, l'utilisation du wifi est conseillé.) Bonjour et bienvenue dans mesmangas, faites défiler cette page vers le haut pour apprendre à  utiliser l'application.pour commencer, appuyer sur ");
+            t2.setText("selectionner la langue à  votre convenance, et enfin patienté. L'application Mesmangas va chercher tous les titres disponibles sur le site internet sélectionné. Votre manga trouvé, appuyer sur son nom pour l'ajouter à votre liste de lecture. Il ne vous reste plus qu'à regarder vos manga en appuyant sur");
+            monTuto.show();
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("tuto1", false).commit();
+        }
 
-			Typeface tf = Typeface.createFromAsset(getAssets(), "Another.ttf");
-			b1.setTypeface(tf);
-			b2.setTypeface(tf);
-			b3.setTypeface(tf);
-			b4.setTypeface(tf);
-			b5.setTypeface(tf);
-			b6.setTypeface(tf);
-			b1.setTextSize(25);
-			b2.setTextSize(25);
-			b3.setTextSize(25);
-			b4.setTextSize(25);
-			b5.setTextSize(25);
-			b6.setTextSize(25);
-		}
+        if (version != SystemInformation.getVersion(this)) {
+            FileLt.recursiveDelete(new File("sdcard/.mesmangas"));
+            FileLt.recursiveDelete(new File(path));
+            AlertDialog alerte = new AlertDialog.Builder(Main.this)
+                    .setIcon(R.drawable.ic_title_refresh)
+                    .setTitle(R.string.miseajour)
+                    .setMessage(
+                            "* reparation de la récupération depuis animes-story suite aux mises à  jour du site\n\n* correction d'un bug lors de l'affichage des pages\n\n* ajout d'un site source espagnol\n* Je recherche des personnes désirant m'aider à  la traduction de l'application dans d'autres langues\n\n"
+                                    + "* Je cherche aussi un nouveau logo pour l'application, vous pouvez m'envoyer vos idée ;-)").setNeutralButton(R.string.fermer, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putInt("version", SystemInformation.getVersion(Main.this)).commit();
+                            editor.putString("mail", SystemInformation.getMailsUser(Main.this).get(0)).commit();
+                        }
+                    }).create();
+            alerte.show();
+        }
 
-		// mFlipper = (ViewFlipper) findViewById(R.id.flipper);
-		// mFlipper.setInAnimation(this, R.anim.push_left_in);
-		// mFlipper.setOutAnimation(this, R.anim.push_left_out);
-		// mFlipper.startFlipping();
+        else {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putInt("version", 0).commit();
+        }
 
-		// cache la fleche retour pour main
-		LinearLayout ll = (LinearLayout) findViewById(R.id.actionbar);
-		ImageView imback = (ImageView) ll.findViewById(R.id.btn_title_back);
-		imback.setVisibility(View.GONE);
-		// ===============================
+        if (policeperso) {
+            Typeface tf = Typeface.createFromAsset(getAssets(), "Another.ttf");
+            b1.setTypeface(tf);
+            b2.setTypeface(tf);
+            b3.setTypeface(tf);
+            b4.setTypeface(tf);
+            b5.setTypeface(tf);
+            b6.setTypeface(tf);
+            b1.setTextSize(25);
+            b2.setTextSize(25);
+            b3.setTextSize(25);
+            b4.setTextSize(25);
+            b5.setTextSize(25);
+            b6.setTextSize(25);
+        }
 
-		// \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\
-		if (!SystemInformation.IsConnectedToNetwork(this))
-			Toast.makeText(this, getString(R.string.netnecessaire), Toast.LENGTH_LONG).show();
-		if (!SystemInformation.isSdPresent())
-			Toast.makeText(this, getString(R.string.sdnecessaire), Toast.LENGTH_LONG).show();
+        // cache la fleche retour pour main
 
-		CheckUpdate check = new CheckUpdate();
-		check.execute();
-		// \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\
-	}
+        imback.setVisibility(View.GONE);
+        // ===============================
 
-	private class CheckUpdate extends AsyncTask<Void, Void, Boolean> {
-		Boolean test;
+        // \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\
+        if (!SystemInformation.IsConnectedToNetwork(this))
+            Notification.toastl(this, getString(R.string.netnecessaire));
+        if (!SystemInformation.isSdPresent())
+            Notification.toastl(this, getString(R.string.sdnecessaire));
 
-		@Override
-		protected Boolean doInBackground(Void... arg0) {
-			if (SystemInformation.getVersionName(Main.this).equals(Web.GetVersionOnMarket(Main.this)) && SystemInformation.getVersionName(Main.this) != "") {
-				test = false;
-			} else {
-				test = true;
-			}
-			// Notification.log("test", test.toString());
-			// Notification.log("test2",
-			// "locale : "+SystemInformation.getVersionName(Main.this).toString()+" online : "+Web.GetVersionOnMarket(Main.this));
-			return test;
-		}
+        CheckUpdate check = new CheckUpdate();
+        check.execute();
+        // \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\
+    }
 
-		@Override
-		protected void onPostExecute(Boolean result) {
-			if (test) {
-				DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						switch (which) {
-						case DialogInterface.BUTTON_POSITIVE:
-							// Yes button clicked
-							IntentLt.openMarketApp(Main.this);
-							break;
+    private class CheckUpdate extends AsyncTask<Void, Void, Boolean> {
+        Boolean test;
 
-						case DialogInterface.BUTTON_NEGATIVE:
-							// No button clicked
-							break;
-						}
-					}
-				};
+        @Override protected Boolean doInBackground(Void... arg0) {
+            if (SystemInformation.getVersionName(Main.this).equals(Web.GetVersionOnMarket(Main.this)) && SystemInformation.getVersionName(Main.this) != "") {
+                test = false;
+            } else {
+                test = true;
+            }
+            // Notification.log("test", test.toString());
+            // Notification.log("test2",
+            // "locale : "+SystemInformation.getVersionName(Main.this).toString()+" online : "+Web.GetVersionOnMarket(Main.this));
+            return test;
+        }
 
-				AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
-				builder.setMessage(getString(R.string.miseajour2)).setPositiveButton(getString(R.string.oui), dialogClickListener).setNegativeButton(getString(R.string.non), dialogClickListener).show();
-			}
-			super.onPostExecute(result);
-		}
-	}
+        @Override protected void onPostExecute(Boolean result) {
+            if (test) {
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            // Yes button clicked
+                            IntentLt.openMarketApp(Main.this);
+                            break;
 
-	public void onActionAdd(View v) {
-		Intent intentAjout = new Intent(this, Ajout1.class);
-		intentAjout.putExtra("path", path);
-		intentAjout.putExtra("mail", mail);
-		this.startActivityForResult(intentAjout, 1000);
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            // No button clicked
+                            break;
+                        }
+                    }
+                };
 
-	}
+                AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
+                builder.setMessage(getString(R.string.miseajour2)).setPositiveButton(getString(R.string.oui), dialogClickListener).setNegativeButton(getString(R.string.non), dialogClickListener).show();
+            }
+            super.onPostExecute(result);
+        }
+    }
 
-	public void onActionShow(View v) {
-		Intent intentListe = new Intent(this, Maliste1.class);
-		intentListe.putExtra("path", path);
-		intentListe.putExtra("mail", mail);
-		startActivityForResult(intentListe, 2000);
-	}
+    public void onActionAdd(View v) {
+        Intent intentAjout = new Intent(this, Ajout1.class);
+        intentAjout.putExtra("path", path);
+        intentAjout.putExtra("mail", mail);
+        this.startActivityForResult(intentAjout, 1000);
 
-	public void onActionShowSd(View v) {
-		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-		intent.setType("file/*");
-		startActivityForResult(Intent.createChooser(intent, getString(R.string.selectionpremierepage)), PICKFILE_RESULT_CODE);
-	}
+    }
 
-	public void onActionTrashClick(View v) {
-		Toast.makeText(this, getString(R.string.vidagecache), Toast.LENGTH_SHORT).show();
-		FileLt.recursiveDelete(new File("sdcard/.mesmangas"));
-		FileLt.recursiveDelete(new File(path));
-	}
+    public void onActionShow(View v) {
+        Intent intentListe = new Intent(this, Maliste1.class);
+        intentListe.putExtra("path", path);
+        intentListe.putExtra("mail", mail);
+        startActivityForResult(intentListe, 2000);
+    }
 
-	public void onActionPreferenceClick(View v) {
-		Intent intentPreference = new Intent(this, Preference.class);
-		this.startActivityForResult(intentPreference, 3000);
-	}
+    public void onActionShowSd(View v) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("file/*");
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.selectionpremierepage)), PICKFILE_RESULT_CODE);
+    }
 
-	public void onActionSendClick(View v) {
-		/* Create the Intent */
-		final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+    public void onActionTrashClick(View v) {
+        Notification.toastc(this, getString(R.string.vidagecache));
+        FileLt.recursiveDelete(new File("sdcard/.mesmangas"));
+        FileLt.recursiveDelete(new File(path));
+    }
 
-		/* Fill it with Data */
-		emailIntent.setType("plain/text");
-		emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "julien.quievreux@gmail.com" });
-		emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Mesmangas");
-		// emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Text");
+    public void onActionPreferenceClick(View v) {
+        Intent intentPreference = new Intent(this, Preference.class);
+        this.startActivityForResult(intentPreference, 3000);
+    }
 
-		/* Send it off to the Activity-Chooser */
-		this.startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-	}
+    public void onActionSendClick(View v) {
+        /* Create the Intent */
+        final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 
-	public void onActionBarButtonClick(View v) {
-		Main.this.finish();
-	}
+        /* Fill it with Data */
+        emailIntent.setType("plain/text");
+        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "julien.quievreux@gmail.com" });
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Mesmangas");
+        // emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Text");
 
-	public void onActionBarButtonExitClick(View v) {
-		Main.this.finish();
-	}
+        /* Send it off to the Activity-Chooser */
+        this.startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+    }
 
-	public void onActionBarButtonBackClick(View v) {}
+    public void onActionBarButtonClick(View v) {
+        Main.this.finish();
+    }
 
-	public void backhome(View v) {}
+    public void onActionBarButtonExitClick(View v) {
+        Main.this.finish();
+    }
 
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		switch (requestCode) {
-		case 1000:
-			if (resultCode == 1)
-				Main.this.finish();
+    public void onActionBarButtonBackClick(View v) {}
 
-			break;
-		case 2000:
-			if (resultCode == 1)
-				Main.this.finish();
-			break;
-		case 3000:
-			if (resultCode == 1)
-				Main.this.finish();
-			break;
-		case 4000:
-			if (resultCode == 1)
-				Main.this.finish();
-			break;
-		case PICKFILE_RESULT_CODE:
-			if (resultCode == RESULT_OK) {
+    public void backhome(View v) {}
 
-				String FilePath = data.getData().getPath();
-				if (FilePath.contains("mimetype"))
-					FilePath = FilePath.substring(10, FilePath.length());
-				String FileName = data.getData().getLastPathSegment();
-				int lastPos = FilePath.length() - FileName.length();
-				String Folder = FilePath.substring(0, lastPos);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+        case 1000:
+            if (resultCode == 1)
+                Main.this.finish();
 
-				Intent intent = new Intent(this, AfficherSd.class);
-				intent.putExtra("folder", Folder);
-				intent.putExtra("file", FilePath);
-				intent.putExtra("path", path);
-				intent.putExtra("mail", mail);
-				startActivityForResult(intent, 4000);
-				// monUtilitaire.showToast("filename "+FileName+" filepath "+FilePath+" folder "+Folder,
-				// 1, this);
+            break;
+        case 2000:
+            if (resultCode == 1)
+                Main.this.finish();
+            break;
+        case 3000:
+            if (resultCode == 1)
+                Main.this.finish();
+            break;
+        case 4000:
+            if (resultCode == 1)
+                Main.this.finish();
+            break;
+        case PICKFILE_RESULT_CODE:
+            if (resultCode == RESULT_OK) {
 
-			}
-			break;
-		}
-	}
+                String FilePath = data.getData().getPath();
+                if (FilePath.contains("mimetype"))
+                    FilePath = FilePath.substring(10, FilePath.length());
+                String FileName = data.getData().getLastPathSegment();
+                int lastPos = FilePath.length() - FileName.length();
+                String Folder = FilePath.substring(0, lastPos);
 
-	public void NextClick(View v) {
-		mFlipper.stopFlipping();
-		mFlipper.setInAnimation(Main.this, R.anim.push_left_in);
-		mFlipper.setOutAnimation(Main.this, R.anim.push_left_out);
-		mFlipper.showNext();
-	}
+                Intent intent = new Intent(this, AfficherSd.class);
+                intent.putExtra("folder", Folder);
+                intent.putExtra("file", FilePath);
+                intent.putExtra("path", path);
+                intent.putExtra("mail", mail);
+                startActivityForResult(intent, 4000);
+                // monUtilitaire.showToast("filename "+FileName+" filepath "+FilePath+" folder "+Folder,
+                // 1, this);
 
-	public void BeforeClick(View v) {
-		mFlipper.stopFlipping();
-		mFlipper.setInAnimation(this, R.anim.push_right_in);
-		mFlipper.setOutAnimation(this, R.anim.push_right_out);
-		mFlipper.showPrevious();
-	}
+            }
+            break;
+        }
+    }
 
-	public void FlipperClick(View v) {
-		switch (mFlipper.getDisplayedChild()) {
-		case 0:
-			IntentLt.openSite(this, "http://adep.comxa.com");
-			break;
-		case 1:
-			final String APP_PNAME = "fr.letroll.mesmangas";
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PNAME)));
-			break;
-		default:
-			break;
-		}
-	}
+    public void NextClick(View v) {
+        mFlipper.stopFlipping();
+        mFlipper.showNext();
+    }
+
+    public void BeforeClick(View v) {
+        mFlipper.stopFlipping();
+        mFlipper.showPrevious();
+    }
+
+    public void FlipperClick(View v) {
+        switch (mFlipper.getDisplayedChild()) {
+        case 0:
+            IntentLt.openSite(this, "http://adep.comxa.com");
+            break;
+        case 1:
+            final String APP_PNAME = "fr.letroll.mesmangas";
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PNAME)));
+            break;
+        default:
+            break;
+        }
+    }
 
 }

@@ -57,14 +57,5 @@
 		Actualización?</string>
 	<string name="oui">sí</string>
 	<string name="non">no</string>
-<!-- 		<string-array name="orientation"> -->
-<!-- 		<item >portrait</item> -->
-<!-- 		<item >paysage</item> -->
-<!-- 		<item >automatique</item> -->
-<!-- 	</string-array> -->
-<!-- 	<string-array name="orientationvalue"> -->
-<!-- 		<item >1</item> -->
-<!-- 		<item >2</item> -->
-<!-- 		<item >3</item> -->
-<!-- 	</string-array> -->
+	<string name="pas2chapitredisponible">hay no capítulos disponibles en el sitio por desgracia, el manga será eliminado de tus favoritos</string>
 </resources>

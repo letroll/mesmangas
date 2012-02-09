@@ -64,9 +64,5 @@
 <!-- 		<item >paysage</item> -->
 <!-- 		<item >automatique</item> -->
 <!-- 	</string-array> -->
-<!-- 	<string-array name="orientationvalue"> -->
-<!-- 		<item >1</item> -->
-<!-- 		<item >2</item> -->
-<!-- 		<item >3</item> -->
-<!-- 	</string-array> -->
+	<string name="pas2chapitredisponible">pas de chapitre disponible sur le site malheureusement, le manga va être supprimé de vos favoris</string>
 </resources>

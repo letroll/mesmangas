@@ -122,7 +122,7 @@ public class Maliste1 extends Activity implements OnItemLongClickListener, OnIte
         Maliste1.this.finish();
     }
 
-    public boolean onItemLongClick(AdapterView<?> parent, View vue, int position, long id) {
+    public void removeManga(int position){
         monDossier = new File("sdcard/.mesmangas");
         File monDossierManga = new File(monDossier, mesmangas.get(position).getNom());
         FileLt.recursiveDelete(monDossierManga);
@@ -130,6 +130,10 @@ public class Maliste1 extends Activity implements OnItemLongClickListener, OnIte
         monUtilitaire.serialiser(mesmangas);
         affichage();
         Notification.toastc(this, this.getString(R.string.mangasupprime));
+    }
+    
+    public boolean onItemLongClick(AdapterView<?> parent, View vue, int position, long id) {
+        removeManga(position);
         return true;
     }
 
@@ -162,9 +166,8 @@ public class Maliste1 extends Activity implements OnItemLongClickListener, OnIte
             Maliste1.this.finish();
             break;
         case 3:
-            // Bundle extras = data.getExtras();
-            // t1.setText(extras != null ? extras.getString("chapitre"):"");
-            // monUtilitaire.LOG("tttttt", extras.getString("chapitre"));
+             Bundle extras = data.getExtras();
+             removeManga(extras.getInt("nummanga"));
             break;
         }
     }

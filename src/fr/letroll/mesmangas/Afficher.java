@@ -138,6 +138,7 @@ public class Afficher extends Activity implements OnClickListener {
         nbpages = 0;
 
         monCache = new File("sdcard/.mesmangas");
+        if (!monCache.exists()) monCache.mkdir();
         monDossierManga = new File(monCache, manga);
         if (!monDossierManga.exists()) monDossierManga.mkdir();
         monChapitre = new File(monDossierManga, chapitre);

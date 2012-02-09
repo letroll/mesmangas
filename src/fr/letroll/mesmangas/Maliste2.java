@@ -13,10 +13,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.Vibrator;
@@ -90,7 +88,8 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
         path = this.getIntent().getExtras().getString("path");
         monUtilitaire = new Utilitaire(path);
 
-        if (!SystemInformation.IsConnectedToNetwork(this)) Toast.makeText(this, getString(R.string.netnecessaire), Toast.LENGTH_LONG).show();
+        if (!SystemInformation.IsConnectedToNetwork(this))
+            Toast.makeText(this, getString(R.string.netnecessaire), Toast.LENGTH_LONG).show();
         adresse = this.getIntent().getExtras().getString("adresse");
         // Notification.log("adresse", adresse);
         titre = this.getIntent().getExtras().getString("titre");
@@ -101,7 +100,8 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
         astuces = preferences.getBoolean("astuces", false);
         ordredeschapitres = preferences.getBoolean("ordredeschapitres", false);
 
-        if (!astuces) Notification.toastc(this, getString(R.string.appuislongsurchapitrepoursuppr));
+        if (!astuces)
+            Notification.toastc(this, getString(R.string.appuislongsurchapitrepoursuppr));
 
         // getupdate = new getUpdate();
 
@@ -142,7 +142,8 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
         }
 
         mesmangas = monUtilitaire.deserializeObject();
-        if (mesmangas.get(nummanga).getLesChapitres().isEmpty() || mesmangas.get(nummanga).getLesChapitres() == null) {
+        if (mesmangas.get(nummanga).getLesChapitres().isEmpty()
+                || mesmangas.get(nummanga).getLesChapitres() == null) {
             new PremierAffichageTast().execute();
             // Notification.log("premier lance", "premier lance");
         } else {
@@ -193,15 +194,24 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
             return null;
         }
 
-        @Override
-        protected void onPostExecute(Void result) {
+        @Override protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             dialog.dismiss();
             reads = new Boolean[monTab.length];
             for (int i = 0; i < monTab.length; i++) {
                 reads[i] = false;
             }
-            affichage(monTab, reads);
+            if (monTab.length > 0) {
+                affichage(monTab, reads);
+            } else {
+                Notification.toastl(Maliste2.this, Maliste2.this.getString(R.string.pas2chapitredisponible));
+
+                Intent intentAfficher = new Intent(Maliste2.this, Afficher.class);
+                intentAfficher.putExtra("chapitre", chapitre);
+                intentAfficher.putExtra("nummanga", nummanga);
+                Maliste2.this.setResult(3, intentAfficher);
+                Maliste2.this.finish();
+            }
         }
     }
 
@@ -221,7 +231,8 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
             mesChapitres = miroir.getChapitre(titre);
         }
 
-        if (ordredeschapitres) Collections.reverse(mesChapitres);
+        if (ordredeschapitres)
+            Collections.reverse(mesChapitres);
 
         int h = mesChapitres.size(), i;
         childrens = new String[h];
@@ -243,7 +254,9 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
         Animation animation = new AlphaAnimation(0.0f, 1.0f);
         animation.setDuration(50);
         set.addAnimation(animation);
-        animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+        animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, -1.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f);
         animation.setDuration(100);
         set.addAnimation(animation);
         LayoutAnimationController controller = new LayoutAnimationController(set, 0.5f);
@@ -260,8 +273,7 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
     // Maliste2.this.finish();
     // }
     // \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             Maliste2.this.finish();
             stopService();
@@ -296,20 +308,21 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
 
         intentAfficher.putExtra("numchapitre", numchap);
 
-        if (miroir.getClass().getSimpleName().toString().equals("AnimeStory") || miroir.getClass().getSimpleName().toString().equals("Mangafox")) {
+        if (miroir.getClass().getSimpleName().toString().equals("AnimeStory")
+                || miroir.getClass().getSimpleName().toString().equals("Mangafox")) {
             adresse = miroir.getImageAdr(titre, adresse, chapitre);
         } else {
             chapitre = miroir.getNomEncode(chapitre);
             adresse = miroir.getImageAdr(titre, adresse, chapitre);
         }
         // Notification.log("adresse", adresse);
-        intentAfficher.putExtra("chemin", adresse);
-        intentAfficher.putExtra("chapitre", chapitre);
+        // intentAfficher.putExtra("chemin", adresse);
+        // intentAfficher.putExtra("chapitre", chapitre);
         // Notification.log("chapitre", ""+chapitre);
-        intentAfficher.putExtra("nummanga", nummanga);
+        // intentAfficher.putExtra("nummanga", nummanga);
         // Notification.log("nummanga", ""+nummanga);
 
-        setResult(3, intentAfficher);
+        // setResult(3, intentAfficher);
 
         startActivityForResult(intentAfficher, 2000);
     }
@@ -321,7 +334,8 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
         vue.findViewById(R.id.progressBar1).setVisibility(View.GONE);
         vue.findViewById(R.id.icon).setVisibility(View.VISIBLE);
 
-        String cheminduchapitre = "sdcard/.mesmangas/" + miroir.getNomEncode2(titre) + "/" + lechapitre;
+        String cheminduchapitre = "sdcard/.mesmangas/" + miroir.getNomEncode2(titre) + "/"
+                + lechapitre;
         monDossier = new File(cheminduchapitre);
         FileLt.recursiveDelete(monDossier);
 
@@ -345,16 +359,19 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
 
     public void Download(View vue) {
         for (int i = 0; i < l1.getChildCount(); i++) {
-            if (l1.getChildAt(i).findViewById(R.id.icon).equals(vue)) position = i;
+            if (l1.getChildAt(i).findViewById(R.id.icon).equals(vue))
+                position = i;
         }
 
         l1.getChildAt(position).findViewById(R.id.icon).setVisibility(View.GONE);
         l1.getChildAt(position).findViewById(R.id.progressBar1).setVisibility(View.VISIBLE);
 
-        String test = ((TextView) l1.getChildAt(position).findViewById(R.id.chapitre)).getText().toString();
+        String test = ((TextView) l1.getChildAt(position).findViewById(R.id.chapitre)).getText()
+                .toString();
         progressbar = (ProgressBar) l1.getChildAt(position).findViewById(R.id.progress);
         progressbar.setVisibility(View.VISIBLE);
-        if (preparation != null) preparation = null;
+        if (preparation != null)
+            preparation = null;
         preparation = new BackgroundPrepare(test);
         preparation.execute();
         vib.vibrate(500);
@@ -393,7 +410,8 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
 
         protected void onPreExecute() {
             // l1.getChildAt(position).findViewById(R.id.progress).setVisibility(View.VISIBLE);
-            if (miroir.getClass().getSimpleName().toString().equals("AnimeStory") || miroir.getClass().getSimpleName().toString().equals("Mangafox")) {
+            if (miroir.getClass().getSimpleName().toString().equals("AnimeStory")
+                    || miroir.getClass().getSimpleName().toString().equals("Mangafox")) {
                 adresse = miroir.getImageAdr(titre, adresse, chapitre);
             } else {
                 chapitre = miroir.getNomEncode(chapitre);
@@ -429,7 +447,8 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
                 e.printStackTrace();
             }
 
-            if (lesAdresses.size() > 0) lesAdresses.remove(0);
+            if (lesAdresses.size() > 0)
+                lesAdresses.remove(0);
             int numchapitre = mesmangas.get(nummanga).getChapPos(chapitre);
             mesmangas.get(nummanga).get(numchapitre).setNbpage(nbpages);
             mesmangas.get(nummanga).get(numchapitre).setChemin(adresse);
@@ -439,9 +458,11 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
             // prepareService(monChapitre.getAbsolutePath());
             File monCache = new File("sdcard/.mesmangas");
             File monDossierManga = new File(monCache, titre);
-            if (!monDossierManga.exists()) monDossierManga.mkdir();
+            if (!monDossierManga.exists())
+                monDossierManga.mkdir();
             File monChapitre = new File(monDossierManga, chapitre);
-            if (!monChapitre.exists()) monChapitre.mkdir();
+            if (!monChapitre.exists())
+                monChapitre.mkdir();
             prepareService(monChapitre.getAbsolutePath());
             // Notification.log(tag, monChapitre.getAbsolutePath());
             // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
@@ -472,24 +493,21 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
 
     }
 
-    @Override
-    protected void onResume() {
+    @Override protected void onResume() {
         super.onResume();
         IntentFilter filter = new IntentFilter();
         filter.addAction(CUSTOM_INTENT);
         registerReceiver(mybroadcast, filter);
     }
 
-    @Override
-    protected void onDestroy() {
+    @Override protected void onDestroy() {
         super.onDestroy();
         releaseService();
         stopService();
         Notification.log(tag, "onDestroy()");
     }
 
-    @Override
-    protected void onPause() {
+    @Override protected void onPause() {
         super.onPause();
         unregisterReceiver(mybroadcast);
     }
@@ -562,8 +580,7 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
 
     class DataReceiver extends BroadcastReceiver {
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
+        @Override public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
             // Notification.log(tag,"nbpages : "+nbpages);
             if (bundle != null) {
@@ -575,17 +592,21 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
                     urlpast = url;
                     if (result) {
                         i++;
-                        if (progressbar == null) progressbar = (ProgressBar) l1.getChildAt(position).findViewById(R.id.progress);
+                        if (progressbar == null)
+                            progressbar = (ProgressBar) l1.getChildAt(position).findViewById(
+                                    R.id.progress);
                         progressbar.setProgress(i);
                         if (i == nbpages - 1) {
                             progressbar.setProgress(0);
                             progressbar.setVisibility(View.INVISIBLE);
-                            l1.getChildAt(position).findViewById(R.id.progressBar1).setVisibility(View.INVISIBLE);
+                            l1.getChildAt(position).findViewById(R.id.progressBar1)
+                                    .setVisibility(View.INVISIBLE);
                             progressbar = null;
                             i = 0;
                         }
                     } else {
-                        // Notification.toastc(getApplicationContext(), "récupération d une image inachevé :-(");
+                        // Notification.toastc(getApplicationContext(),
+                        // "récupération d une image inachevé :-(");
                     }
                 }
             }
