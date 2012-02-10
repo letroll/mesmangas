@@ -35,12 +35,13 @@ import fr.letroll.mesmangas.parcelle.Miroir;
 import fr.letroll.mesmangas.parcelle.Miroirs;
 import fr.letroll.mesmangas.parcelle.Site;
 import fr.letroll.mesmangas.site.AnimeStory;
+import fr.letroll.mesmangas.site.Animextremist;
 import fr.letroll.mesmangas.site.Dbps;
 import fr.letroll.mesmangas.site.MangaAccess;
 import fr.letroll.mesmangas.site.Mangafox;
-import fr.letroll.mesmangas.site.Animextremist;
 
-public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemClickListener, OnScrollListener, TextWatcher {
+public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemClickListener,
+        OnScrollListener, TextWatcher {
 
     // composants
     Spinner s1;
@@ -50,7 +51,7 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
     // variables
     private Utilitaire monUtilitaire;
     private Mesmangas mesmangas;
-    private String path, pays, site;
+    private String path, pays, site, CiDateTime;
     private int numsite;
     private File maSauvegarde;
     private ArrayList<String> lesTitres;
@@ -74,37 +75,36 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
     private boolean mReady;
     private char mPrevLetter = Character.MIN_VALUE;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ajout);
 
         // // affiche refresh
         // LinearLayout ll = (LinearLayout) findViewById(R.id.actionbar);
-        // ImageView imrefresh = (ImageView) ll.findViewById(R.id.btn_title_refresh);
+        // ImageView imrefresh = (ImageView)
+        // ll.findViewById(R.id.btn_title_refresh);
         // imrefresh.setVisibility(View.VISIBLE);
         // // ===============================
-        
-      //using Calendar class
+
+        // using Calendar class
         Calendar ci = Calendar.getInstance();
 
-        
-        String CiDateTime = "" + ci.get(Calendar.YEAR) + "-" + 
-             (ci.get(Calendar.MONTH) + 1) + "-" +
-             ci.get(Calendar.DAY_OF_MONTH) + " " +
-             ci.get(Calendar.HOUR) + ":" +
-             ci.get(Calendar.MINUTE) +  ":" +
-             ci.get(Calendar.SECOND);
+        CiDateTime = "" + ci.get(Calendar.YEAR) + "-" + (ci.get(Calendar.MONTH) + 1) + "-"
+                + ci.get(Calendar.DAY_OF_MONTH);// + " " +
+        // ci.get(Calendar.HOUR) + ":" +
+        // ci.get(Calendar.MINUTE) + ":" +
+        // ci.get(Calendar.SECOND);
         Notification.log("date", CiDateTime);
-        
+
         mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
 
         path = this.getIntent().getExtras().getString("path");
         pays = this.getIntent().getExtras().getString("pays");
 
         monUtilitaire = new Utilitaire(path);
-//        if (!SystemInformation.IsConnectedToNetwork(this))
-//            Toast.makeText(this, getString(R.string.netnecessaire), Toast.LENGTH_LONG).show();
+        // if (!SystemInformation.IsConnectedToNetwork(this))
+        // Toast.makeText(this, getString(R.string.netnecessaire),
+        // Toast.LENGTH_LONG).show();
         mesmangas = new Mesmangas();
         maSauvegarde = new File(path);
         lesTitres = new ArrayList<String>();
@@ -128,23 +128,26 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
 
         e1 = (EditText) findViewById(R.id.EditText01);
         e1.addTextChangedListener(this);
-        
+
         l1 = (ListView) findViewById(R.id.listView1);
         l1.setOnScrollListener(this);
         s1 = (Spinner) findViewById(R.id.spinner1);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, lesSites);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s1.setAdapter(adapter);
-        
+
         LayoutInflater inflate = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mDialogText = (TextView) inflate.inflate(R.layout.list_position, null);
         mDialogText.setVisibility(View.INVISIBLE);
         mHandler.post(new Runnable() {
             public void run() {
                 mReady = true;
-                WindowManager.LayoutParams lp = new WindowManager.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
-                        WindowManager.LayoutParams.TYPE_APPLICATION, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
+                        LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
+                        WindowManager.LayoutParams.TYPE_APPLICATION,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                        PixelFormat.TRANSLUCENT);
                 mWindowManager.addView(mDialogText, lp);
             }
         });
@@ -174,8 +177,8 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
 
     public void hideKeyboard(View v) {
         ViewUtils.hideKeyboard(this, e1);
-    }    
-    
+    }
+
     public void onSiteWithSelect() {
         if (pays.equals("fr")) {
             switch (numsite) {
@@ -202,15 +205,15 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
             case 0:
                 miror = new Animextremist();
                 break;
-//            case 1:
-//                miror = new Mangafox(path);
-//                break;
+            // case 1:
+            // miror = new Mangafox(path);
+            // break;
             }
         }
         new getMangaTask().execute();
     }
 
-    public class getMangaTask extends AsyncTask<Void, Void, Void> {
+    public class getMangaTask extends AsyncTask<Void, Void, Boolean> {
         ProgressDialog dialog = new ProgressDialog(Ajout2.this);
 
         protected void onPreExecute() {
@@ -222,32 +225,58 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
             lesTitres.clear();
         }
 
-        protected Void doInBackground(Void... arg0) {
-            
-          //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\
-//            List<NameValuePair> params = new ArrayList<NameValuePair>();
-//            params.add(new BasicNameValuePair("date",));
-//            params.add(new BasicNameValuePair("pass", "xyz"));
-//            Web.GetHTML("adep.comxa.com/index2.php", params);
-          //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\
+        protected Boolean doInBackground(Void... arg0) {
             lesTitres = miror.getMangaList();
-            return null;
+            if (lesTitres.size() > 2) {
+                // \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\
+                // //\\
+                // List<NameValuePair> params = new ArrayList<NameValuePair>();
+                // params.add(new BasicNameValuePair("date", CiDateTime));
+                // params.add(new BasicNameValuePair("site",
+                // miror.getNomDuSite()));
+                // params.add(new BasicNameValuePair("list", lesTitres));
+                // Web.GetHTML("adep.comxa.com/index2.php", params);
+                // \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\
+                // //\\
+                return true;
+            } else {
+                return false;
+            }
         }
 
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
             dialog.dismiss();
-            l1.setAdapter(new ArrayAdapter<String>(Ajout2.this, android.R.layout.simple_list_item_1, lesTitres));
+            l1.setAdapter(new ArrayAdapter<String>(Ajout2.this,
+                    android.R.layout.simple_list_item_1, lesTitres));
             ViewUtils.hideKeyboard(Ajout2.this, e1);
             // Notification.log("remplissage","size:lesTitres= "+lesTitres.size());
-            try {
-                if(lesTitres.size()>2)mesmangas.addSite(new Site(site, lesTitres));
-            } catch (Exception e) {
-                mesmangas = monUtilitaire.deserializeObject();
-                if(lesTitres.size()>2)mesmangas.addSite(new Site(site, lesTitres));
-//                e.printStackTrace();
+
+            if (result) {
+
+                // \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\
+                // //\\
+                // List<NameValuePair> params = new ArrayList<NameValuePair>();
+                // params.add(new BasicNameValuePair("date", CiDateTime));
+                // params.add(new BasicNameValuePair("site",
+                // miror.getNomDuSite()));
+                // params.add(new BasicNameValuePair("list", lesTitres));
+                // Web.GetHTML("adep.comxa.com/index2.php", params);
+                // \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\
+                // //\\
+
+                try {
+                    mesmangas.addSite(new Site(site, lesTitres));
+                } catch (Exception e) {
+                    mesmangas = monUtilitaire.deserializeObject();
+                    mesmangas.addSite(new Site(site, lesTitres));
+                    // e.printStackTrace();
+                }
+                monUtilitaire.serialiser(mesmangas);
+            } else {
+
             }
-            monUtilitaire.serialiser(mesmangas);
+
         }
 
     }
@@ -271,10 +300,11 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
             for (String monsite : mesmangas.getMesAdresseSite()) {
                 if (site.contains(monsite)) {
                     trouve = true;
-//                     Notification.log("remplissage","site retrouve");
+                    // Notification.log("remplissage","site retrouve");
                     lesTitres = mesmangas.getS(i).getTitre();
                     // Notification.log("remplissage","size:lesTitres= "+lesTitres.size());
-                    l1.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lesTitres));
+                    l1.setAdapter(new ArrayAdapter<String>(this,
+                            android.R.layout.simple_list_item_1, lesTitres));
                     ViewUtils.hideKeyboard(Ajout2.this, e1);
                     break;
                 }
@@ -294,8 +324,7 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
         remplissage();
     }
 
-    public void onNothingSelected(AdapterView<?> parent) {
-    }
+    public void onNothingSelected(AdapterView<?> parent) {}
 
     public void onItemClick(AdapterView<?> parent, View vue, int position, long id) {
 
@@ -306,33 +335,30 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
         Ajout2.this.finish();
     }
 
-    @Override
-    protected void onResume() {
+    @Override protected void onResume() {
         super.onResume();
         mReady = true;
     }
 
-    @Override
-    protected void onPause() {
+    @Override protected void onPause() {
         super.onPause();
         removeWindow();
         mReady = false;
     }
 
-    @Override
-    protected void onDestroy() {
+    @Override protected void onDestroy() {
         super.onDestroy();
         mWindowManager.removeView(mDialogText);
         mReady = false;
     }
 
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+            int totalItemCount) {
         if (mReady) {
             char firstLetter = '0';
             try {
                 firstLetter = lesTitres.get(firstVisibleItem).charAt(0);
-            } catch (Exception e) {
-            }
+            } catch (Exception e) {}
 
             if (!mShowing && firstLetter != mPrevLetter) {
                 mShowing = true;
@@ -345,8 +371,7 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
         }
     }
 
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-    }
+    public void onScrollStateChanged(AbsListView view, int scrollState) {}
 
     private void removeWindow() {
         if (mShowing) {
@@ -355,27 +380,26 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
         }
     }
 
-    @Override
-    public void afterTextChanged(Editable arg0) {}
+    @Override public void afterTextChanged(Editable arg0) {}
 
-    @Override
-    public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
+    @Override public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
 
-    @Override
-    public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+    @Override public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
         int textlength = e1.getText().length();
         ArrayList<String> arr_sort = new ArrayList<String>();
 
         // lesTitres.clear();
         for (int i = 0; i < lesTitres.size(); i++) {
             if (textlength <= lesTitres.get(i).length()) {
-                if (e1.getText().toString().equalsIgnoreCase(lesTitres.get(i).substring(0, textlength))) {
+                if (e1.getText().toString()
+                        .equalsIgnoreCase(lesTitres.get(i).substring(0, textlength))) {
                     arr_sort.add(lesTitres.get(i));
                 }
             }
         }
 
-        l1.setAdapter(new ArrayAdapter<String>(Ajout2.this, android.R.layout.simple_list_item_1, arr_sort));
+        l1.setAdapter(new ArrayAdapter<String>(Ajout2.this, android.R.layout.simple_list_item_1,
+                arr_sort));
     }
 
 }

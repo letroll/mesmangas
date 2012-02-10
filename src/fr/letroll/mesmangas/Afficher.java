@@ -85,7 +85,8 @@ public class Afficher extends Activity implements OnClickListener {
 
         if (pleinecran) {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
-            this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
 
         setContentView(R.layout.affichage);
@@ -109,7 +110,8 @@ public class Afficher extends Activity implements OnClickListener {
         monUtilitaire = new Utilitaire(path);
 
         // Notification.log("numchapitre", "" + numchapitre);
-        if (!SystemInformation.IsConnectedToNetwork(this)) Notification.toastc(this, getString(R.string.netnecessaire));
+        if (!SystemInformation.IsConnectedToNetwork(this))
+            Notification.toastc(this, getString(R.string.netnecessaire));
         mesmangas = monUtilitaire.deserializeObject();
 
         p1 = (ProgressBar) findViewById(R.id.progressBar1);
@@ -136,14 +138,20 @@ public class Afficher extends Activity implements OnClickListener {
         before.setOnClickListener(this);
 
         nbpages = 0;
+        try {
+            monCache = new File("sdcard/.mesmangas");
+            if (!monCache.exists())
+                monCache.mkdir();
+            monDossierManga = new File(monCache, manga);
+            if (!monDossierManga.exists())
+                monDossierManga.mkdir();
 
-        monCache = new File("sdcard/.mesmangas");
-        if (!monCache.exists()) monCache.mkdir();
-        monDossierManga = new File(monCache, manga);
-        if (!monDossierManga.exists()) monDossierManga.mkdir();
-        monChapitre = new File(monDossierManga, chapitre);
-        if (!monChapitre.exists()) monChapitre.mkdir();
-
+            monChapitre = new File(monDossierManga, chapitre);
+            if (!monChapitre.exists())
+                monChapitre.mkdir();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // ========================================================================
         // verifie si le manga est deja dispo au quel cas on ne le retelecharge
         // pas
@@ -162,14 +170,15 @@ public class Afficher extends Activity implements OnClickListener {
             p1.setVisibility(View.GONE);
 
             // Notification.log("affichage", "chapitre deja present");
-            if (monChapitre.list().length >= 1) w1.init(manga, chapitre, nbpages);
+            if (monChapitre.list().length >= 1)
+                w1.init(manga, chapitre, nbpages);
         }
 
         // \\//\\//\\//\\//\\//\\//\\
         startService();
         bindService();
-        // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\ 
-        
+        // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
+
     }
 
     protected void onResume() {
@@ -190,8 +199,7 @@ public class Afficher extends Activity implements OnClickListener {
         registerReceiver(mybroadcast, filter);
     }
 
-    @Override
-    protected void onDestroy() {
+    @Override protected void onDestroy() {
         super.onDestroy();
         releaseService();
         stopService();
@@ -199,14 +207,12 @@ public class Afficher extends Activity implements OnClickListener {
         Notification.log(tag, "onDestroy()");
     }
 
-    @Override
-    protected void onPause() {
+    @Override protected void onPause() {
         super.onPause();
         unregisterReceiver(mybroadcast);
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    @Override public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
 
@@ -241,6 +247,7 @@ public class Afficher extends Activity implements OnClickListener {
 
         protected void onPreExecute() {
             p1.setVisibility(View.VISIBLE);
+            
             if (new MangaAccess().isMe(chemin)) {
                 miroir = new MangaAccess();
             }
@@ -272,7 +279,8 @@ public class Afficher extends Activity implements OnClickListener {
                 e.printStackTrace();
             }
 
-            if (lesAdresses.size() > 0) lesAdresses.remove(0);
+            if (lesAdresses.size() > 0)
+                lesAdresses.remove(0);
             mesmangas.get(nummanga).get(numchapitre).setNbpage(nbpages);
             mesmangas.get(nummanga).get(numchapitre).setChemin(chemin);
             monUtilitaire.serialiser(mesmangas);
@@ -411,8 +419,7 @@ public class Afficher extends Activity implements OnClickListener {
     };
 
     class DataReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
+        @Override public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
             // Notification.log(tag,"nbpages : "+nbpages);
             if (bundle != null) {
@@ -425,9 +432,12 @@ public class Afficher extends Activity implements OnClickListener {
                         i++;
                         p1.setProgress(i);
                         // Notification.log(tag, "" + i);
-                        if (i == 1) if (monChapitre.list().length > 0) w1.init(manga, chapitre, nbpages);
+                        if (i == 1)
+                            if (monChapitre.list().length > 0)
+                                w1.init(manga, chapitre, nbpages);
                     } else {
-                        // Notification.toastc(getApplicationContext(), "récupération d une image inachevé :-(");
+                        // Notification.toastc(getApplicationContext(),
+                        // "récupération d une image inachevé :-(");
                     }
                     if (i == nbpages - 1) {
                         Notification.toastc(Afficher.this, getString(R.string.recuperationfinie));
@@ -439,7 +449,8 @@ public class Afficher extends Activity implements OnClickListener {
     }
 
     public void onActionBarButtonRefreshClick(View v) {
-        if (maprepa.isCancelled()) maprepa.execute();
+        if (maprepa.isCancelled())
+            maprepa.execute();
     }
 
 }

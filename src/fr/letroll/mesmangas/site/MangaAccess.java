@@ -13,7 +13,7 @@ import fr.letroll.framework.Web;
 import fr.letroll.mesmangas.parcelle.Miroir;
 
 public class MangaAccess implements Miroir {
-    private String nomDuSite = "Manga-Access";
+    public static String nomDuSite = "Manga-Access";
     private String adresseDesMangas = "http://manga-access.com/manga/list";
     private String adresseSeul = "http://manga-access.com/manga/0/";
     private Document doc;
@@ -175,6 +175,10 @@ public class MangaAccess implements Miroir {
         String tmp = getNomEncode(titre);
         adresse = adresseSeul + tmp + "/chapter/" + chapitre;
         return adresse;
+    }
+
+    @Override public String getNomDuSite() {
+        return nomDuSite;
     }
 
 }

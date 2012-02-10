@@ -13,6 +13,7 @@
 			android:summaryOff="@string/desactive" android:summaryOn="@string/active"
 			android:title="@string/policeperso" android:key="policeperso" />
 		<CheckBoxPreference android:defaultValue="false" android:key="ordredeschapitres" android:summaryOff="@string/normal" android:title="@string/ordredeschapitres" android:summaryOn="@string/inverse"></CheckBoxPreference>
+		<CheckBoxPreference android:summaryOn="@string/active" android:summaryOff="@string/desactive" android:title="debug" android:key="debug"/>
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/pdtlalecture">
 

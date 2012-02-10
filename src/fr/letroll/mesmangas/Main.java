@@ -1,6 +1,8 @@
 package fr.letroll.mesmangas;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
@@ -43,9 +45,10 @@ public class Main extends RoboActivity {
     @InjectView(R.id.action_six_button) Button b6;
 
     private String path, mail;
-
+    
     private SharedPreferences preferences;
-    private Boolean policeperso;
+    private Boolean policeperso,DEVELOPER_MODE;
+    private static final String tag = "MesMangas";
     private static final int PICKFILE_RESULT_CODE = 5000;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -54,11 +57,44 @@ public class Main extends RoboActivity {
         ls = this.getFilesDir();
         path = ls.getAbsolutePath() + "/mesmangas";
         AppRater.app_launched(this);
-
+        
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         policeperso = preferences.getBoolean("policeperso", false);
         mail = preferences.getString("mail", "");
         int version = preferences.getInt("version", 0);
+        
+        DEVELOPER_MODE = preferences.getBoolean("debug", false);
+        if (DEVELOPER_MODE) {
+            try {
+                Class<?> strictModeClass = Class.forName("android.os.StrictMode", true, Thread.currentThread()
+                        .getContextClassLoader());
+
+                Class<?> threadPolicyClass = Class.forName("android.os.StrictMode$ThreadPolicy", true, Thread
+                        .currentThread().getContextClassLoader());
+
+                Class<?> threadPolicyBuilderClass = Class.forName("android.os.StrictMode$ThreadPolicy$Builder", true,
+                        Thread.currentThread().getContextClassLoader());
+
+                Method setThreadPolicyMethod = strictModeClass.getMethod("setThreadPolicy", threadPolicyClass);
+
+                Method detectAllMethod = threadPolicyBuilderClass.getMethod("detectAll");
+                Method penaltyMethod = threadPolicyBuilderClass.getMethod("penaltyLog");
+                Method buildMethod = threadPolicyBuilderClass.getMethod("build");
+
+                Constructor<?> threadPolicyBuilderConstructor = threadPolicyBuilderClass.getConstructor();
+                Object threadPolicyBuilderObject = threadPolicyBuilderConstructor.newInstance();
+
+                Object obj = detectAllMethod.invoke(threadPolicyBuilderObject);
+
+                obj = penaltyMethod.invoke(obj);
+                Object threadPolicyObject = buildMethod.invoke(obj);
+                setThreadPolicyMethod.invoke(strictModeClass, threadPolicyObject);
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        
         boolean tuto = preferences.getBoolean("tuto1", true);
 
         if (tuto) {

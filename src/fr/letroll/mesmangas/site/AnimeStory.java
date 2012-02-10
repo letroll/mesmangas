@@ -17,6 +17,10 @@ import fr.letroll.mesmangas.parcelle.Miroir;
 public class AnimeStory implements Miroir {
 
     private String nomDuSite = "Anime-Story";
+    public String getNomDuSite() {
+        return nomDuSite;
+    }
+
     private String adresseDuSite = "http://www.anime-story.com/mangas/";
     private String adresseSeul = "http://www.anime-story.com/";
     private String tag = "mesmangas";

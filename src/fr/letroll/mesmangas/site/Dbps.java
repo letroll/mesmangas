@@ -171,4 +171,8 @@ public class Dbps implements Miroir{
         adresse = adresse + tmp + "/" + chapitre;
         return adresse;
     }
+
+    @Override public String getNomDuSite() {
+        return nomDuSite;
+    }
 }

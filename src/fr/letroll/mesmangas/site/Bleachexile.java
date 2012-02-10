@@ -17,6 +17,10 @@ import fr.letroll.mesmangas.Miroir;
 
 public class Bleachexile implements Miroir{
     private String nomDuSite = "Bleachexile";
+    public String getNomDuSite() {
+        return nomDuSite;
+    }
+
     private String adresseDuSite = "http://manga.bleachexile.com/";
     private Document doc;
 

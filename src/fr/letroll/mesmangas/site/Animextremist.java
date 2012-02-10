@@ -234,4 +234,8 @@ public class Animextremist implements Miroir {
         adresse = adresseSeul + titre + "/" + chapitre + "/";
         return adresse;
     }
+
+    @Override public String getNomDuSite() {
+        return nomDuSite;
+    }
 }

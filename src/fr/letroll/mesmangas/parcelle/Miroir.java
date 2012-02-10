@@ -50,4 +50,9 @@ public interface Miroir {
     // ===========================================================
     public String getImageAdr(String titre, String adresse, String chapitre);
 
+    // ===========================================================
+    // retourne le nim du site
+    // ===========================================================
+    public String getNomDuSite();
+
 }
