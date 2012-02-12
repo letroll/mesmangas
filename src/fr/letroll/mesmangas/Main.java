@@ -110,22 +110,22 @@ public class Main extends RoboActivity {
 
             TextView t1 = (TextView) findViewById(R.id.textView2);
             TextView t2 = (TextView) findViewById(R.id.textView1);
-            t1.setText("(cette application nécessite un accés à  internet, l'utilisation du wifi est conseillé.) Bonjour et bienvenue dans mesmangas, faites défiler cette page vers le haut pour apprendre à  utiliser l'application.pour commencer, appuyer sur ");
-            t2.setText("selectionner la langue à  votre convenance, et enfin patienté. L'application Mesmangas va chercher tous les titres disponibles sur le site internet sélectionné. Votre manga trouvé, appuyer sur son nom pour l'ajouter à votre liste de lecture. Il ne vous reste plus qu'à regarder vos manga en appuyant sur");
+            t1.setText("(cette application nÃ©cessite un accÃ©s Ã  internet, l'utilisation du wifi est conseillÃ©.) Bonjour et bienvenue dans mesmangas, faites dÃ©filer cette page vers le haut pour apprendre Ã  utiliser l'application.pour commencer, appuyer sur ");
+            t2.setText("selectionner la langue Ã  votre convenance, et enfin patientÃ©. L'application Mesmangas va chercher tous les titres disponibles sur le site internet sÃ©lectionnÃ©. Votre manga trouvÃ©, appuyer sur son nom pour l'ajouter Ã  votre liste de lecture. Il ne vous reste plus qu'Ã  regarder vos manga en appuyant sur");
             monTuto.show();
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("tuto1", false).commit();
         }
 
-        if (version != SystemInformation.getVersion(this)) {
+        if (version != SystemInformation.getVersion(Main.this)) {
             FileLt.recursiveDelete(new File("sdcard/.mesmangas"));
             FileLt.recursiveDelete(new File(path));
             AlertDialog alerte = new AlertDialog.Builder(Main.this)
                     .setIcon(R.drawable.ic_title_refresh)
                     .setTitle(R.string.miseajour)
                     .setMessage(
-                            "* reparation de la récupération depuis animes-story suite aux mises à  jour du site\n\n* correction d'un bug lors de l'affichage des pages\n\n* ajout d'un site source espagnol\n* Je recherche des personnes désirant m'aider à  la traduction de l'application dans d'autres langues\n\n"
-                                    + "* Je cherche aussi un nouveau logo pour l'application, vous pouvez m'envoyer vos idée ;-)").setNeutralButton(R.string.fermer, new DialogInterface.OnClickListener() {
+                            "* reparation de la rÃ©cupÃ©ration depuis animes-story suite aux mises Ã  jour du site\n\n* correction d'un bug lors de l'affichage des pages\n\n* ajout d'un site source espagnol\n* Je recherche des personnes dÃ©sirant m'aider Ã  la traduction de l'application dans d'autres langues\n\n"
+                                    + "* Je cherche aussi un nouveau logo pour l'application, vous pouvez m'envoyer vos idÃ©e ;-)").setNeutralButton(R.string.fermer, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putInt("version", SystemInformation.getVersion(Main.this)).commit();
