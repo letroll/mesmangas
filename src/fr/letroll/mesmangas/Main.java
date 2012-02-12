@@ -21,13 +21,13 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.ViewFlipper;
 import fr.letroll.framework.FileLt;
 import fr.letroll.framework.IntentLt;
 import fr.letroll.framework.Notification;
 import fr.letroll.framework.SystemInformation;
 import fr.letroll.framework.Web;
+import java.util.List;
 
 public class Main extends RoboActivity {
     private File ls;
@@ -43,14 +43,23 @@ public class Main extends RoboActivity {
     @InjectView(R.id.action_four_button) Button b4;
     @InjectView(R.id.action_five_button) Button b5;
     @InjectView(R.id.action_six_button) Button b6;
-
-    private String path, mail;
+//    @InjectView(R.id.textView1) TextView t2;
+//    @InjectView(R.id.textView2) TextView t1;
     
+    private String path, mail;
     private SharedPreferences preferences;
     private Boolean policeperso,DEVELOPER_MODE;
     private static final String tag = "MesMangas";
     private static final int PICKFILE_RESULT_CODE = 5000;
 
+    
+
+    protected void addApplicationModules(List<MonModule> modules) {
+        // add your module with custom bindings
+        modules.add(new MonModule());
+    }
+
+    
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
@@ -95,27 +104,26 @@ public class Main extends RoboActivity {
             }
         }
         
-        boolean tuto = preferences.getBoolean("tuto1", true);
-
-        if (tuto) {
-            final Dialog monTuto = new Dialog(this);
-            monTuto.setContentView(R.layout.tuto_dialog1);
-            Button b1 = (Button) monTuto.findViewById(R.id.button1);
-            b1.setText("quitter");
-            b1.setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    monTuto.cancel();
-                }
-            });
-
-            TextView t1 = (TextView) findViewById(R.id.textView2);
-            TextView t2 = (TextView) findViewById(R.id.textView1);
-            t1.setText("(cette application nécessite un accés à internet, l'utilisation du wifi est conseillé.) Bonjour et bienvenue dans mesmangas, faites défiler cette page vers le haut pour apprendre à utiliser l'application.pour commencer, appuyer sur ");
-            t2.setText("selectionner la langue à votre convenance, et enfin patienté. L'application Mesmangas va chercher tous les titres disponibles sur le site internet sélectionné. Votre manga trouvé, appuyer sur son nom pour l'ajouter à votre liste de lecture. Il ne vous reste plus qu'à regarder vos manga en appuyant sur");
-            monTuto.show();
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean("tuto1", false).commit();
-        }
+//        boolean tuto = preferences.getBoolean("tuto1", true);
+//
+//        if (tuto) {
+//            final Dialog monTuto = new Dialog(this);
+//            monTuto.setContentView(R.layout.tuto_dialog1);
+//            Button b1 = (Button) monTuto.findViewById(R.id.button1);
+//            b1.setText("quitter");
+//            b1.setOnClickListener(new OnClickListener() {
+//                public void onClick(View v) {
+//                    monTuto.cancel();
+//                }
+//            });
+//            TextView t2= (TextView) monTuto.findViewById(R.id.textView1);
+//            TextView t1= (TextView) monTuto.findViewById(R.id.textView2);
+//            t1.setText("(cette application nécessite un accés à internet, l'utilisation du wifi est conseillé.) Bonjour et bienvenue dans mesmangas, faites défiler cette page vers le haut pour apprendre à utiliser l'application.pour commencer, appuyer sur ");
+//            t2.setText("selectionner la langue à votre convenance, et enfin patienté. L'application Mesmangas va chercher tous les titres disponibles sur le site internet sélectionné. Votre manga trouvé, appuyer sur son nom pour l'ajouter à votre liste de lecture. Il ne vous reste plus qu'à regarder vos manga en appuyant sur");
+//            monTuto.show();
+//            SharedPreferences.Editor editor = preferences.edit();
+//            editor.putBoolean("tuto1", false).commit();
+//        }
 
         if (version != SystemInformation.getVersion(Main.this)) {
             FileLt.recursiveDelete(new File("sdcard/.mesmangas"));

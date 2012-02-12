@@ -1,33 +1,30 @@
 package fr.letroll.mesmangas.site;
 
+import fr.letroll.framework.Notification;
+import fr.letroll.framework.Web;
+import fr.letroll.mesmangas.parcelle.Miroir;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import fr.letroll.framework.Notification;
-import fr.letroll.framework.Web;
-import fr.letroll.mesmangas.parcelle.Miroir;
-
 public class AnimeStory implements Miroir {
 
     private String nomDuSite = "Anime-Story";
+
     public String getNomDuSite() {
         return nomDuSite;
     }
-
     private String adresseDuSite = "http://www.anime-story.com/mangas/";
     private String adresseSeul = "http://www.anime-story.com/";
     private String tag = "mesmangas";
     private Document doc;
 
     // private String Icon="bleachexile.ico";
-
     public AnimeStory() {
     }
 
@@ -50,13 +47,13 @@ public class AnimeStory implements Miroir {
             int i = 0;
             for (org.jsoup.nodes.Element element : titles) {
                 if (i > 0) {
-                    if (!element.text().contains("mise à") && !element.text().contains("Mise à")) {
+                    if (!element.text().contains("mise ï¿½") && !element.text().contains("Mise ï¿½")) {
                         array_manga.add(element.text().toLowerCase());
                     } else {
                         String tmp = element.text();
                         tmp = tmp.replace("(", "");
-                        tmp = tmp.replace("mise à jour", "");
-                        tmp = tmp.replace("Mise à jour", "");
+                        tmp = tmp.replace("mise ï¿½ jour", "");
+                        tmp = tmp.replace("Mise ï¿½ jour", "");
                         tmp = tmp.replace(")", "");
                         array_manga.add(tmp.toLowerCase());
                     }
@@ -64,17 +61,16 @@ public class AnimeStory implements Miroir {
                 }
                 i++;
             }
-            i=0;
+            i = 0;
             Collections.sort(array_manga);
-        }catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
             // TODO: handle exception
-        } 
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        }catch (Exception e) {
+        } catch (Exception e) {
             // TODO: handle exception
         }
-        
+
         return array_manga;
     }
 
@@ -85,7 +81,7 @@ public class AnimeStory implements Miroir {
         String nomEncode;
 //        nomManga = nomManga.toLowerCase();
         nomEncode = nomManga;
-        nomEncode = nomEncode.replaceAll("mise à jour", "");
+        nomEncode = nomEncode.replaceAll("mise ï¿½ jour", "");
         nomEncode = nomEncode.replace("1/2", "half");
         nomEncode = nomEncode.replace("1/3", "13");
 
@@ -116,22 +112,22 @@ public class AnimeStory implements Miroir {
             String source = Web.GetHTML(adr, null);
 //             Notification.log("source", source);
             doc = Jsoup.parse(source);
-            
+
             Elements liens = doc.select("div[class^=listchapseries] > ul > li > div");
             for (Element element : liens) {
                 chap = element.select("a:eq(2").attr("title");
                 chap = chap.replace("Lire ", "");
-                chap = chap.substring(nomManga.length()+1,chap.length()-2);
+                chap = chap.substring(nomManga.length() + 1, chap.length() - 2);
                 chap = chap.toLowerCase();
                 chap = chap.trim();
                 chap = chap.replace(" ", "-");
                 lesChapitres.add(chap);
             }
-            
-        }catch (Exception e) {
+
+        } catch (Exception e) {
             lesChapitres.add("");
         }
-         Collections.reverse(lesChapitres);
+        Collections.reverse(lesChapitres);
         return lesChapitres;
     }
 
@@ -154,13 +150,12 @@ public class AnimeStory implements Miroir {
                 res.add(idx);
             }
 
-        }catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
             // TODO: handle exception
-        } 
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             res.add("");
-        }catch (Exception e) {
+        } catch (Exception e) {
             // TODO: handle exception
         }
 
@@ -178,10 +173,9 @@ public class AnimeStory implements Miroir {
             if (monImage.size() != 0) {
                 tmp = monImage.get(0).attr("src");
             }
-        }catch (MalformedURLException e) {
-            Notification.log(tag, "erreur due à : "+tmp);
-        } 
-        catch (IOException e) {
+        } catch (MalformedURLException e) {
+            Notification.log(tag, "erreur due ï¿½ : " + tmp);
+        } catch (IOException e) {
             tmp = "";
             e.printStackTrace();
         } catch (Exception e) {
@@ -202,9 +196,9 @@ public class AnimeStory implements Miroir {
             ext = src.substring(src.length() - 3, src.length());
         } catch (MalformedURLException e) {
             // TODO: handle exception
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        }catch (Exception e) {
+        } catch (Exception e) {
             // TODO: handle exception
         }
 
@@ -220,7 +214,7 @@ public class AnimeStory implements Miroir {
 //        Notification.log("adresse :", adresse);
 //        Notification.log("chapitre :", chapitre);
 
-        adresse = adresseSeul+ titre +"/" + chapitre + "/";
+        adresse = adresseSeul + titre + "/" + chapitre + "/";
         return adresse;
     }
 }

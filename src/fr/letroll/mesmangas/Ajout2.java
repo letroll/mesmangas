@@ -48,6 +48,9 @@ import fr.letroll.mesmangas.site.Animextremist;
 import fr.letroll.mesmangas.site.Dbps;
 import fr.letroll.mesmangas.site.MangaAccess;
 import fr.letroll.mesmangas.site.Mangafox;
+import org.jsoup.Jsoup;
+import org.jsoup.select.Elements;
+import org.w3c.dom.Document;
 
 public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemClickListener, OnScrollListener, TextWatcher {
 
@@ -55,7 +58,6 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
     Spinner s1;
     ListView l1;
     EditText e1;
-
     // variables
     private Utilitaire monUtilitaire;
     private Mesmangas mesmangas;
@@ -71,11 +73,11 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
     private Miroir miror;
 
     private final class RemoveWindow implements Runnable {
+
         public void run() {
             removeWindow();
         }
     }
-
     private RemoveWindow mRemoveWindow = new RemoveWindow();
     Handler mHandler = new Handler();
     private WindowManager mWindowManager;
@@ -100,8 +102,8 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
         Calendar ci = Calendar.getInstance();
 
         CiDateTime = "" + ci.get(Calendar.YEAR) + "-" + (ci.get(Calendar.MONTH) + 1) + "-" + ci.get(Calendar.DAY_OF_MONTH);// +
-                                                                                                                           // " "
-                                                                                                                           // +
+        // " "
+        // +
         // ci.get(Calendar.HOUR) + ":" +
         // ci.get(Calendar.MINUTE) + ":" +
         // ci.get(Calendar.SECOND);
@@ -151,6 +153,7 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
         mDialogText = (TextView) inflate.inflate(R.layout.list_position, null);
         mDialogText.setVisibility(View.INVISIBLE);
         mHandler.post(new Runnable() {
+
             public void run() {
                 mReady = true;
                 WindowManager.LayoutParams lp = new WindowManager.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_APPLICATION, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
@@ -176,7 +179,6 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
     // public void onActionBarButtonRefreshClick(View v) {
     // //
     // }
-
     public void backhome(View v) {
         this.setResult(2);
         Ajout2.this.finish();
@@ -189,38 +191,39 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
     public void onSiteWithSelect() {
         if (pays.equals("fr")) {
             switch (numsite) {
-            case 0:
-                miror = new AnimeStory();
-                break;
-            case 1:
-                miror = new Dbps();
-                break;
+                case 0:
+                    miror = new AnimeStory();
+                    break;
+                case 1:
+                    miror = new Dbps();
+                    break;
             }
         }
         if (pays.equals("en")) {
             switch (numsite) {
-            case 0:
-                miror = new MangaAccess();
-                break;
-            case 1:
-                miror = new Mangafox();
-                break;
+                case 0:
+                    miror = new MangaAccess();
+                    break;
+                case 1:
+                    miror = new Mangafox();
+                    break;
             }
         }
         if (pays.equals("sp")) {
             switch (numsite) {
-            case 0:
-                miror = new Animextremist();
-                break;
-            // case 1:
-            // miror = new Mangafox(path);
-            // break;
+                case 0:
+                    miror = new Animextremist();
+                    break;
+                // case 1:
+                // miror = new Mangafox(path);
+                // break;
             }
         }
         new getMangaTask().execute();
     }
 
     public class getMangaTask extends AsyncTask<Void, Void, Boolean> {
+
         ProgressDialog dialog = new ProgressDialog(Ajout2.this);
 
         protected void onPreExecute() {
@@ -235,12 +238,41 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
         protected Boolean doInBackground(Void... arg0) {
 
             // \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\//\\
-             List<NameValuePair> params = new ArrayList<NameValuePair>();
-             params.add(new BasicNameValuePair("site", miror.getNomDuSite()));
-             Notification.log(tag, miror.getNomDuSite());
-             String test=Web.GetHTML("http://letroll.alwaysdata.net/getlist.php",params);
-             Notification.log(tag, test);
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("site", miror.getNomDuSite()));
+            Notification.log(tag, "dessous la une");
+            String test = Web.GetHTML("http://letroll.alwaysdata.net/getlist.php", params, "android");
+
+            Notification.log(tag, test.substring(59));
             // \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\//\\
+            org.jsoup.nodes.Document doc = Jsoup.parse(test.substring(59));
+            Elements mangas = doc.select("manga");
+            Notification.log(tag,"size: "+mangas.size());
+
+//            try {
+//                DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+//                domFactory.setNamespaceAware(true); // never forget this!
+//                DocumentBuilder builder = domFactory.newDocumentBuilder();
+//                Document doc = builder.parse(test);
+//
+//                XPathFactory factory = XPathFactory.newInstance();
+//                XPath xpath = factory.newXPath();
+//                XPathExpression expr = xpath.compile("//book[author='Neal Stephenson']/title/text()");
+//
+//                Object result = expr.evaluate(doc, XPathConstants.NODESET);
+//                NodeList nodes = (NodeList) result;
+//                for (int i = 0; i < nodes.getLength(); i++) {
+//                    System.out.println(nodes.item(i).getNodeValue());
+//                }
+//            } catch (XPathExpressionException ex) {
+//                Logger.getLogger(Ajout2.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (SAXException ex) {
+//                Logger.getLogger(Ajout2.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (IOException ex) {
+//                Logger.getLogger(Ajout2.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (ParserConfigurationException ex) {
+//                Logger.getLogger(Ajout2.class.getName()).log(Level.SEVERE, null, ex);
+//            }
 
             lesTitres = miror.getMangaList();
             if (lesTitres.size() > 2) {
@@ -248,6 +280,7 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
             } else {
                 return false;
             }
+
         }
 
         protected void onPostExecute(Boolean result) {
@@ -263,9 +296,11 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
                 params.add(new BasicNameValuePair("date", CiDateTime));
                 params.add(new BasicNameValuePair("site", miror.getNomDuSite()));
-                String xml=writeUsingXMLSerializer(lesTitres);
+                String xml = writeUsingXMLSerializer(lesTitres);
                 params.add(new BasicNameValuePair("list", xml));
-                Web.GetHTML("http://letroll.alwaysdata.net/addlist.php", params,"android");
+                Notification.log(tag, "dessous la 2");
+                String test = Web.GetHTML("http://letroll.alwaysdata.net/addlist.php", params, "android");
+                Notification.log(tag, test);
                 // \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\
 
                 try {
@@ -277,11 +312,9 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
                 }
                 monUtilitaire.serialiser(mesmangas);
             } else {
-
             }
 
         }
-
     }
 
     public static String writeUsingXMLSerializer(ArrayList<String> list) {
@@ -440,5 +473,4 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
 
         l1.setAdapter(new ArrayAdapter<String>(Ajout2.this, android.R.layout.simple_list_item_1, arr_sort));
     }
-
 }
