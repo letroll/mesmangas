@@ -51,7 +51,6 @@ import fr.letroll.mesmangas.site.Mangafox;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.w3c.dom.Document;
 
 public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemClickListener, OnScrollListener, TextWatcher {
 
@@ -243,7 +242,9 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
             params.add(new BasicNameValuePair("site", miror.getNomDuSite()));
             Notification.log(tag, "dessous la une");
             String test = Web.GetHTML("http://letroll.alwaysdata.net/getlist.php", params, "android");
-            test = test.substring(56);
+            if (test.length() > 56) {
+                test = test.substring(56);
+            }
             Notification.log(tag, test);
             // \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\//\\
             org.jsoup.nodes.Document doc = Jsoup.parse(test);

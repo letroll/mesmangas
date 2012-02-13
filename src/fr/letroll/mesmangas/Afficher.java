@@ -247,7 +247,7 @@ public class Afficher extends Activity implements OnClickListener {
 
         protected void onPreExecute() {
             p1.setVisibility(View.VISIBLE);
-            
+            Notification.log(tag, "le chemin est: "+chemin);
             if (new MangaAccess().isMe(chemin)) {
                 miroir = new MangaAccess();
             }

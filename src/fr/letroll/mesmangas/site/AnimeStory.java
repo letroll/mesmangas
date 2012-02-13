@@ -47,13 +47,13 @@ public class AnimeStory implements Miroir {
             int i = 0;
             for (org.jsoup.nodes.Element element : titles) {
                 if (i > 0) {
-                    if (!element.text().contains("mise �") && !element.text().contains("Mise �")) {
+                    if (!element.text().contains("mise à") && !element.text().contains("Mise à")) {
                         array_manga.add(element.text().toLowerCase());
                     } else {
                         String tmp = element.text();
                         tmp = tmp.replace("(", "");
-                        tmp = tmp.replace("mise � jour", "");
-                        tmp = tmp.replace("Mise � jour", "");
+                        tmp = tmp.replace("mise à jour", "");
+                        tmp = tmp.replace("Mise à jour", "");
                         tmp = tmp.replace(")", "");
                         array_manga.add(tmp.toLowerCase());
                     }
@@ -79,7 +79,7 @@ public class AnimeStory implements Miroir {
         String nomEncode;
 //        nomManga = nomManga.toLowerCase();
         nomEncode = nomManga;
-        nomEncode = nomEncode.replaceAll("mise � jour", "");
+        nomEncode = nomEncode.replaceAll("mise à jour", "");
         nomEncode = nomEncode.replace("1/2", "half");
         nomEncode = nomEncode.replace("1/3", "13");
 
@@ -170,7 +170,7 @@ public class AnimeStory implements Miroir {
                 tmp = monImage.get(0).attr("src");
             }
         } catch (MalformedURLException e) {
-            Notification.log(tag, "erreur due � : " + tmp);
+            Notification.log(tag, "erreur due à : " + tmp);
         } catch (IOException e) {
             tmp = "";
             e.printStackTrace();

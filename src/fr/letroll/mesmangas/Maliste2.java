@@ -316,10 +316,10 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
             adresse = miroir.getImageAdr(titre, adresse, chapitre);
         }
         // Notification.log("adresse", adresse);
-        // intentAfficher.putExtra("chemin", adresse);
-        // intentAfficher.putExtra("chapitre", chapitre);
-        // Notification.log("chapitre", ""+chapitre);
-        // intentAfficher.putExtra("nummanga", nummanga);
+         intentAfficher.putExtra("chemin", adresse);
+         intentAfficher.putExtra("chapitre", chapitre);
+//         Notification.log("chapitre", ""+chapitre);
+         intentAfficher.putExtra("nummanga", nummanga);
         // Notification.log("nummanga", ""+nummanga);
 
         // setResult(3, intentAfficher);
