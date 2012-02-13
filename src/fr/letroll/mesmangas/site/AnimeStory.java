@@ -64,11 +64,9 @@ public class AnimeStory implements Miroir {
             i = 0;
             Collections.sort(array_manga);
         } catch (MalformedURLException e) {
-            // TODO: handle exception
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
-            // TODO: handle exception
         }
 
         return array_manga;
@@ -151,12 +149,10 @@ public class AnimeStory implements Miroir {
             }
 
         } catch (MalformedURLException e) {
-            // TODO: handle exception
         } catch (IOException e) {
             e.printStackTrace();
             res.add("");
         } catch (Exception e) {
-            // TODO: handle exception
         }
 
         return res;
@@ -179,7 +175,6 @@ public class AnimeStory implements Miroir {
             tmp = "";
             e.printStackTrace();
         } catch (Exception e) {
-            // TODO: handle exception
         }
         return tmp;
     }
@@ -195,11 +190,9 @@ public class AnimeStory implements Miroir {
             String src = monImage.attr("src");
             ext = src.substring(src.length() - 3, src.length());
         } catch (MalformedURLException e) {
-            // TODO: handle exception
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
-            // TODO: handle exception
         }
 
         return ext;

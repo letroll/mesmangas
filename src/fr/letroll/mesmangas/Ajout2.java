@@ -49,6 +49,7 @@ import fr.letroll.mesmangas.site.Dbps;
 import fr.letroll.mesmangas.site.MangaAccess;
 import fr.letroll.mesmangas.site.Mangafox;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.w3c.dom.Document;
 
@@ -242,39 +243,20 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
             params.add(new BasicNameValuePair("site", miror.getNomDuSite()));
             Notification.log(tag, "dessous la une");
             String test = Web.GetHTML("http://letroll.alwaysdata.net/getlist.php", params, "android");
-
-            Notification.log(tag, test.substring(59));
+            test = test.substring(56);
+            Notification.log(tag, test);
             // \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\//\\
-            org.jsoup.nodes.Document doc = Jsoup.parse(test.substring(59));
+            org.jsoup.nodes.Document doc = Jsoup.parse(test);
             Elements mangas = doc.select("manga");
-            Notification.log(tag,"size: "+mangas.size());
+            Notification.log(tag, "size: " + mangas.size());
 
-//            try {
-//                DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-//                domFactory.setNamespaceAware(true); // never forget this!
-//                DocumentBuilder builder = domFactory.newDocumentBuilder();
-//                Document doc = builder.parse(test);
-//
-//                XPathFactory factory = XPathFactory.newInstance();
-//                XPath xpath = factory.newXPath();
-//                XPathExpression expr = xpath.compile("//book[author='Neal Stephenson']/title/text()");
-//
-//                Object result = expr.evaluate(doc, XPathConstants.NODESET);
-//                NodeList nodes = (NodeList) result;
-//                for (int i = 0; i < nodes.getLength(); i++) {
-//                    System.out.println(nodes.item(i).getNodeValue());
-//                }
-//            } catch (XPathExpressionException ex) {
-//                Logger.getLogger(Ajout2.class.getName()).log(Level.SEVERE, null, ex);
-//            } catch (SAXException ex) {
-//                Logger.getLogger(Ajout2.class.getName()).log(Level.SEVERE, null, ex);
-//            } catch (IOException ex) {
-//                Logger.getLogger(Ajout2.class.getName()).log(Level.SEVERE, null, ex);
-//            } catch (ParserConfigurationException ex) {
-//                Logger.getLogger(Ajout2.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-
-            lesTitres = miror.getMangaList();
+            if (mangas.size() > 2) {
+                for (Element element : mangas) {
+                    lesTitres.add(element.text());
+                }
+            } else {
+                lesTitres = miror.getMangaList();
+            }
             if (lesTitres.size() > 2) {
                 return true;
             } else {
@@ -333,13 +315,10 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
 
             xmlSerializer.endDocument();
         } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IllegalStateException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

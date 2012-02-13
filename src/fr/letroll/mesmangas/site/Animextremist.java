@@ -191,9 +191,7 @@ public class Animextremist implements Miroir {
                 Notification.log(tag, tmp);
             }
         } catch (MalformedURLException e) {
-            // TODO: handle exception
         } catch (IOException e) {
-            // TODO: handle exception
         } catch (Exception e) {
             tmp = "";
             e.printStackTrace();
@@ -212,11 +210,9 @@ public class Animextremist implements Miroir {
             String src = monImage.attr("src");
             ext = src.substring(src.length() - 3, src.length());
         } catch (MalformedURLException e) {
-            // TODO: handle exception
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
-            // TODO: handle exception
         }
 
         return ext;

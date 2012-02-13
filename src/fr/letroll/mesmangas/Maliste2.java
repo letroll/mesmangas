@@ -403,7 +403,6 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
             try {
                 remoteService.setPos(position);
             } catch (RemoteException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -606,7 +605,7 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
                         }
                     } else {
                         // Notification.toastc(getApplicationContext(),
-                        // "récupération d une image inachevé :-(");
+                        // "rï¿½cupï¿½ration d une image inachevï¿½ :-(");
                     }
                 }
             }
