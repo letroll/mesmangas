@@ -246,9 +246,7 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
     }
 
     private void affichage(String[] list, Boolean[] reads) {
-
         l1.setAdapter(new ListTwoAdapter(this, list, reads));
-
         l1.setTextFilterEnabled(true);
         AnimationSet set = new AnimationSet(true);
         Animation animation = new AlphaAnimation(0.0f, 1.0f);
@@ -347,7 +345,7 @@ public class Maliste2 extends Activity implements OnItemClickListener, OnItemLon
             }
             i++;
         }
-
+//        affichage(childrens, reads);
         vib.vibrate(500);
         // ImageView iv = (ImageView) vue.findViewById(R.id.icon);
         // iv.setVisibility(View.INVISIBLE);

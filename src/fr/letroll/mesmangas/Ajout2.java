@@ -274,18 +274,7 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
             // Notification.log("remplissage","size:lesTitres= "+lesTitres.size());
 
             if (result) {
-
-                // \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\
-                List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(new BasicNameValuePair("date", CiDateTime));
-                params.add(new BasicNameValuePair("site", miror.getNomDuSite()));
-                String xml = writeUsingXMLSerializer(lesTitres);
-                params.add(new BasicNameValuePair("list", xml));
-                Notification.log(tag, "dessous la 2");
-                String test = Web.GetHTML("http://letroll.alwaysdata.net/addlist.php", params, "android");
-                Notification.log(tag, test);
-                // \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\
-
+                new Addlist().execute();
                 try {
                     mesmangas.addSite(new Site(site, lesTitres));
                 } catch (Exception e) {
@@ -294,9 +283,30 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
                     // e.printStackTrace();
                 }
                 monUtilitaire.serialiser(mesmangas);
-            } else {
             }
 
+        }
+    }
+
+    public class Addlist extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... arg0) {
+            // \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("date", CiDateTime));
+            params.add(new BasicNameValuePair("site", miror.getNomDuSite()));
+            String xml = writeUsingXMLSerializer(lesTitres);
+            params.add(new BasicNameValuePair("list", xml));
+            Notification.log(tag, "dessous la 2");
+            String test = Web.GetHTML("http://letroll.alwaysdata.net/addlist.php", params, "android");
+//                Notification.log(tag, test);
+            if (test.length() > 2) {
+                return true;
+            } else {
+                return false;
+            }
+            // \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\
         }
     }
 
