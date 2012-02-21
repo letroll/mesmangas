@@ -168,20 +168,20 @@ public class Mangafox implements Miroir {
     // ===========================================================
     // retourne l'extension de l'image d'une adresse donnee
     // ===========================================================
-    public String getImageExt(String chemin) {
-        String ext;
-        try {
-            doc = Jsoup.connect(chemin).timeout(3000).get();
-            Element monImage = doc.select("img#image").get(0);
-            String src = monImage.attr("src");
-            ext = src.substring(src.length() - 3, src.length());
-        } catch (Exception e) {
-            e.printStackTrace();
-            ext = "";
-        }
-
-        return ext;
-    }
+//    public String getImageExt(String chemin) {
+//        String ext;
+//        try {
+//            doc = Jsoup.connect(chemin).timeout(3000).get();
+//            Element monImage = doc.select("img#image").get(0);
+//            String src = monImage.attr("src");
+//            ext = src.substring(src.length() - 3, src.length());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            ext = "";
+//        }
+//
+//        return ext;
+//    }
 
     // ===========================================================
     // retourne l'adresse ou chercher les images

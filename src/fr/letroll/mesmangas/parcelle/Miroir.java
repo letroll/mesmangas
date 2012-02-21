@@ -43,7 +43,7 @@ public interface Miroir {
     // ===========================================================
     // retourne l'extension de l'image d'une adresse donnee
     // ===========================================================
-    public String getImageExt(String chemin);
+//    public String getImageExt(String chemin);
 
     // ===========================================================
     // retourne l'adresse ou chercher les images

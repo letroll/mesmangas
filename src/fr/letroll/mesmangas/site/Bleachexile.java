@@ -13,7 +13,7 @@ import org.jsoup.select.Elements;
 import android.util.Log;
 import fr.letroll.framework.Notification;
 import fr.letroll.framework.Web;
-import fr.letroll.mesmangas.Miroir;
+import fr.letroll.mesmangas.parcelle.Miroir;
 
 public class Bleachexile implements Miroir{
     private String nomDuSite = "Bleachexile";
@@ -192,17 +192,17 @@ public class Bleachexile implements Miroir{
     // ===========================================================
     // retourne l'extension de l'image d'une adresse donnee
     // ===========================================================
-    public String getImageExt(String chemin) {
-        try {
-            doc = Jsoup.connect(chemin).timeout(3000).get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Element monImage = doc.select("img[title=Click to advance to the next page!]").get(0);
-        String src = monImage.attr("src");
-        String ext = src.substring(src.length() - 3, src.length());
-        return ext;
-    }
+//    public String getImageExt(String chemin) {
+//        try {
+//            doc = Jsoup.connect(chemin).timeout(3000).get();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        Element monImage = doc.select("img[title=Click to advance to the next page!]").get(0);
+//        String src = monImage.attr("src");
+//        String ext = src.substring(src.length() - 3, src.length());
+//        return ext;
+//    }
 
     // ===========================================================
     // retourne l'adresse ou chercher les images

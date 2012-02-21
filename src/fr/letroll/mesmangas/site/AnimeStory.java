@@ -47,13 +47,13 @@ public class AnimeStory implements Miroir {
             int i = 0;
             for (org.jsoup.nodes.Element element : titles) {
                 if (i > 0) {
-                    if (!element.text().contains("mise Ã ") && !element.text().contains("Mise Ã ")) {
+                    if (!element.text().contains("mise à") && !element.text().contains("Mise à")) {
                         array_manga.add(element.text().toLowerCase());
                     } else {
                         String tmp = element.text();
                         tmp = tmp.replace("(", "");
-                        tmp = tmp.replace("mise Ã  jour", "");
-                        tmp = tmp.replace("Mise Ã  jour", "");
+                        tmp = tmp.replace("mise à jour", "");
+                        tmp = tmp.replace("Mise à jour", "");
                         tmp = tmp.replace(")", "");
                         array_manga.add(tmp.toLowerCase());
                     }
@@ -79,11 +79,11 @@ public class AnimeStory implements Miroir {
         String nomEncode;
 //        nomManga = nomManga.toLowerCase();
         nomEncode = nomManga;
-        nomEncode = nomEncode.replaceAll("mise Ã  jour", "");
+        nomEncode = nomEncode.replaceAll("mise à jour", "");
         nomEncode = nomEncode.replace("1/2", "half");
         nomEncode = nomEncode.replace("1/3", "13");
 
-        nomEncode = nomEncode.replaceAll("[!#$%&'() ~*+,\"\\-:;\\[\\]<=>?]", "");
+        nomEncode = nomEncode.replaceAll("[!#$%&'() ~*,\"\\-:;\\[\\]<=>?]", "");
 
         // Notification.log("nom modifie par getNomEncode", nomEncode);
         return nomEncode;
@@ -105,7 +105,7 @@ public class AnimeStory implements Miroir {
         ArrayList<String> lesChapitres = new ArrayList<String>();
         String adr = adresseDuSite + nomManga + "/";
         String chap;
-//         Notification.log("source", adr);
+         Notification.log("source", adr);
         try {
             String source = Web.GetHTML(adr, null);
 //             Notification.log("source", source);
@@ -170,7 +170,7 @@ public class AnimeStory implements Miroir {
                 tmp = monImage.get(0).attr("src");
             }
         } catch (MalformedURLException e) {
-            Notification.log(tag, "erreur due Ã  : " + tmp);
+            Notification.log(tag, "erreur due à : " + tmp);
         } catch (IOException e) {
             tmp = "";
             e.printStackTrace();
@@ -182,21 +182,21 @@ public class AnimeStory implements Miroir {
     // ===========================================================
     // retourne l'extension de l'image d'une adresse donnee
     // ===========================================================
-    public String getImageExt(String chemin) {
-        String ext = "";
-        try {
-            doc = Jsoup.connect(chemin).timeout(3000).get();
-            Element monImage = doc.select("a[title=Aller a la page suivante] > img").get(0);
-            String src = monImage.attr("src");
-            ext = src.substring(src.length() - 3, src.length());
-        } catch (MalformedURLException e) {
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-        }
-
-        return ext;
-    }
+//    public String getImageExt(String chemin) {
+//        String ext = "";
+//        try {
+//            doc = Jsoup.connect(chemin).timeout(3000).get();
+//            Element monImage = doc.select("a[title=Aller a la page suivante] > img").get(0);
+//            String src = monImage.attr("src");
+//            ext = src.substring(src.length() - 3, src.length());
+//        } catch (MalformedURLException e) {
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (Exception e) {
+//        }
+//
+//        return ext;
+//    }
 
     // ===========================================================
     // retourne l'adresse ou chercher les images

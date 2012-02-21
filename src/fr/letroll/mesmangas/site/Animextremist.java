@@ -202,21 +202,21 @@ public class Animextremist implements Miroir {
     // ===========================================================
     // retourne l'extension de l'image d'une adresse donnee
     // ===========================================================
-    public String getImageExt(String chemin) {
-        String ext = "";
-        try {
-            doc = Jsoup.connect(chemin).timeout(3000).get();
-            Element monImage = doc.select("div[id=photograph] > img").get(0);
-            String src = monImage.attr("src");
-            ext = src.substring(src.length() - 3, src.length());
-        } catch (MalformedURLException e) {
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-        }
-
-        return ext;
-    }
+//    public String getImageExt(String chemin) {
+//        String ext = "";
+//        try {
+//            doc = Jsoup.connect(chemin).timeout(3000).get();
+//            Element monImage = doc.select("div[id=photograph] > img").get(0);
+//            String src = monImage.attr("src");
+//            ext = src.substring(src.length() - 3, src.length());
+//        } catch (MalformedURLException e) {
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (Exception e) {
+//        }
+//
+//        return ext;
+//    }
 
     // ===========================================================
     // retourne l'adresse ou chercher les images

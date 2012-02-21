@@ -156,17 +156,17 @@ public class MangaAccess implements Miroir {
     // ===========================================================
     // retourne l'extension de l'image d'une adresse donnee
     // ===========================================================
-    public String getImageExt(String chemin) {
-        try {
-            doc = Jsoup.connect(chemin).timeout(3000).get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Element monImage = doc.select("div[id=pic]>img").get(0);
-        String src = monImage.attr("src");
-        String ext = src.substring(src.length() - 3, src.length());
-        return ext;
-    }
+//    public String getImageExt(String chemin) {
+//        try {
+//            doc = Jsoup.connect(chemin).timeout(3000).get();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        Element monImage = doc.select("div[id=pic]>img").get(0);
+//        String src = monImage.attr("src");
+//        String ext = src.substring(src.length() - 3, src.length());
+//        return ext;
+//    }
 
     // ===========================================================
     // retourne l'adresse ou chercher les images
