@@ -1,5 +1,6 @@
 package fr.letroll.mesmangas;
 
+import fr.letroll.framework.ViewUtils;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -57,7 +58,7 @@ public class Preference extends PreferenceActivity implements OnPreferenceClickL
 
         if (preference.getKey().equals("partage")) {
             AlertDialog.Builder ad = new AlertDialog.Builder(this);
-            ad.setIcon(R.drawable.share);
+            ad.setIcon(ViewUtils.getQrcodeOfApplication(context));
             ad.setTitle(getString(R.string.app_name));
             ad.show();
         }
