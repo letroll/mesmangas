@@ -25,22 +25,18 @@ public class ListOneAdapter extends BaseAdapter {
         site = _site;
     }
 
-    @Override
     public int getCount() {
         return manga.size();
     }
 
-    @Override
     public Object getItem(int arg0) {
         return arg0;
     }
 
-    @Override
     public long getItemId(int arg0) {
         return arg0;
     }
 
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {

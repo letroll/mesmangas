@@ -212,7 +212,7 @@ public class Mangafox implements Miroir {
         return adresse;
     }
 
-    @Override public String getNomDuSite() {
+     public String getNomDuSite() {
         return nomDuSite;
     }
 }

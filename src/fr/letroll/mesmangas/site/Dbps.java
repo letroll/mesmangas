@@ -172,7 +172,7 @@ public class Dbps implements Miroir{
         return adresse;
     }
 
-    @Override public String getNomDuSite() {
+     public String getNomDuSite() {
         return nomDuSite;
     }
 }

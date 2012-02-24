@@ -21,22 +21,21 @@ public class ListTwoAdapter extends BaseAdapter {
         // list2 = mlist2;
     }
 
-    @Override
     public int getCount() {
         return list.length;
     }
 
-    @Override
+    
     public Object getItem(int arg0) {
         return arg0;
     }
 
-    @Override
+    
     public long getItemId(int arg0) {
         return arg0;
     }
 
-    @Override
+    
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder;

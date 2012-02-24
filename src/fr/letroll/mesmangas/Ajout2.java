@@ -86,7 +86,7 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
     private boolean mReady;
     private char mPrevLetter = Character.MIN_VALUE;
 
-    @Override
+    
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ajout);
@@ -290,7 +290,7 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
 
     public class Addlist extends AsyncTask<Void, Void, Boolean> {
 
-        @Override
+        
         protected Boolean doInBackground(Void... arg0) {
             // \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\
             List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -390,20 +390,20 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
         Ajout2.this.finish();
     }
 
-    @Override
+    
     protected void onResume() {
         super.onResume();
         mReady = true;
     }
 
-    @Override
+    
     protected void onPause() {
         super.onPause();
         removeWindow();
         mReady = false;
     }
 
-    @Override
+    
     protected void onDestroy() {
         super.onDestroy();
         mWindowManager.removeView(mDialogText);
@@ -439,15 +439,15 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
         }
     }
 
-    @Override
+    
     public void afterTextChanged(Editable arg0) {
     }
 
-    @Override
+    
     public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
     }
 
-    @Override
+    
     public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
         int textlength = e1.getText().length();
         ArrayList<String> arr_sort = new ArrayList<String>();

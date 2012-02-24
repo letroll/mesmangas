@@ -190,7 +190,7 @@ public class Main extends RoboActivity {
     private class CheckUpdate extends AsyncTask<Void, Void, Boolean> {
         Boolean test;
 
-        @Override protected Boolean doInBackground(Void... arg0) {
+         protected Boolean doInBackground(Void... arg0) {
             if (SystemInformation.getVersionName(Main.this).equals(Web.GetVersionOnMarket(Main.this)) && SystemInformation.getVersionName(Main.this) != "") {
                 test = false;
             } else {
@@ -202,10 +202,10 @@ public class Main extends RoboActivity {
             return test;
         }
 
-        @Override protected void onPostExecute(Boolean result) {
+         protected void onPostExecute(Boolean result) {
             if (test) {
                 DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
+                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                         case DialogInterface.BUTTON_POSITIVE:
                             // Yes button clicked
