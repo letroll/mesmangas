@@ -5,17 +5,21 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import roboguice.activity.RoboActivity;
+import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.InjectView;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,7 +32,7 @@ import fr.letroll.framework.Notification;
 import fr.letroll.framework.SystemInformation;
 import fr.letroll.framework.Web;
 
-public class Main extends RoboActivity {
+public class Main extends RoboFragmentActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private File ls;
 
     @InjectView(R.id.buttonLeft) ImageView before;
@@ -42,54 +46,53 @@ public class Main extends RoboActivity {
     @InjectView(R.id.action_four_button) Button b4;
     @InjectView(R.id.action_five_button) Button b5;
     @InjectView(R.id.action_six_button) Button b6;
-//    @InjectView(R.id.textView1) TextView t2;
-//    @InjectView(R.id.textView2) TextView t1;
-    
+    // @InjectView(R.id.textView1) TextView t2;
+    // @InjectView(R.id.textView2) TextView t1;
 
     // constants
     private static final String tag = "MesMangas";
     private static final int PICKFILE_RESULT_CODE = 5000;
     // variables
     private String path, mail;
-    private Boolean policeperso,DEVELOPER_MODE;
+    private Boolean policeperso, DEVELOPER_MODE;
     private SharedPreferences preferences;
     private DBAdapter db;
-    // view
 
-    
+    // view
 
     protected void addApplicationModules(List<MonModule> modules) {
         // add your module with custom bindings
         modules.add(new MonModule());
     }
 
-    
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
         ls = this.getFilesDir();
         path = ls.getAbsolutePath() + "/mesmangas";
         AppRater.app_launched(this);
-        
+
         db = new DBAdapter(this);
         db.open();
-        
+        db.insererUnSite("narutoSite", "naruto.com", "fr", "favicon.png");
+
+        // getSupportLoaderManager().initLoader(0, null, this);
+        // getSupportLoaderManager().restartLoader(0, null, this);
+        // Cursor c = db.recupererLaListeDesSites();
+
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         policeperso = preferences.getBoolean("policeperso", false);
         mail = preferences.getString("mail", "");
         int version = preferences.getInt("version", 0);
-        
+
         DEVELOPER_MODE = preferences.getBoolean("debug", false);
         if (DEVELOPER_MODE) {
             try {
-                Class<?> strictModeClass = Class.forName("android.os.StrictMode", true, Thread.currentThread()
-                        .getContextClassLoader());
+                Class<?> strictModeClass = Class.forName("android.os.StrictMode", true, Thread.currentThread().getContextClassLoader());
 
-                Class<?> threadPolicyClass = Class.forName("android.os.StrictMode$ThreadPolicy", true, Thread
-                        .currentThread().getContextClassLoader());
+                Class<?> threadPolicyClass = Class.forName("android.os.StrictMode$ThreadPolicy", true, Thread.currentThread().getContextClassLoader());
 
-                Class<?> threadPolicyBuilderClass = Class.forName("android.os.StrictMode$ThreadPolicy$Builder", true,
-                        Thread.currentThread().getContextClassLoader());
+                Class<?> threadPolicyBuilderClass = Class.forName("android.os.StrictMode$ThreadPolicy$Builder", true, Thread.currentThread().getContextClassLoader());
 
                 Method setThreadPolicyMethod = strictModeClass.getMethod("setThreadPolicy", threadPolicyClass);
 
@@ -110,27 +113,27 @@ public class Main extends RoboActivity {
                 ex.printStackTrace();
             }
         }
-        
-//        boolean tuto = preferences.getBoolean("tuto1", true);
-//
-//        if (tuto) {
-//            final Dialog monTuto = new Dialog(this);
-//            monTuto.setContentView(R.layout.tuto_dialog1);
-//            Button b1 = (Button) monTuto.findViewById(R.id.button1);
-//            b1.setText("quitter");
-//            b1.setOnClickListener(new OnClickListener() {
-//                public void onClick(View v) {
-//                    monTuto.cancel();
-//                }
-//            });
-//            TextView t2= (TextView) monTuto.findViewById(R.id.textView1);
-//            TextView t1= (TextView) monTuto.findViewById(R.id.textView2);
-//            t1.setText("(cette application nécessite un accés à internet, l'utilisation du wifi est conseillé.) Bonjour et bienvenue dans mesmangas, faites défiler cette page vers le haut pour apprendre à utiliser l'application.pour commencer, appuyer sur ");
-//            t2.setText("selectionner la langue à votre convenance, et enfin patienté. L'application Mesmangas va chercher tous les titres disponibles sur le site internet sélectionné. Votre manga trouvé, appuyer sur son nom pour l'ajouter à votre liste de lecture. Il ne vous reste plus qu'à regarder vos manga en appuyant sur");
-//            monTuto.show();
-//            SharedPreferences.Editor editor = preferences.edit();
-//            editor.putBoolean("tuto1", false).commit();
-//        }
+
+        // boolean tuto = preferences.getBoolean("tuto1", true);
+        //
+        // if (tuto) {
+        // final Dialog monTuto = new Dialog(this);
+        // monTuto.setContentView(R.layout.tuto_dialog1);
+        // Button b1 = (Button) monTuto.findViewById(R.id.button1);
+        // b1.setText("quitter");
+        // b1.setOnClickListener(new OnClickListener() {
+        // public void onClick(View v) {
+        // monTuto.cancel();
+        // }
+        // });
+        // TextView t2= (TextView) monTuto.findViewById(R.id.textView1);
+        // TextView t1= (TextView) monTuto.findViewById(R.id.textView2);
+        // t1.setText("(cette application nécessite un accés à internet, l'utilisation du wifi est conseillé.) Bonjour et bienvenue dans mesmangas, faites défiler cette page vers le haut pour apprendre à utiliser l'application.pour commencer, appuyer sur ");
+        // t2.setText("selectionner la langue à votre convenance, et enfin patienté. L'application Mesmangas va chercher tous les titres disponibles sur le site internet sélectionné. Votre manga trouvé, appuyer sur son nom pour l'ajouter à votre liste de lecture. Il ne vous reste plus qu'à regarder vos manga en appuyant sur");
+        // monTuto.show();
+        // SharedPreferences.Editor editor = preferences.edit();
+        // editor.putBoolean("tuto1", false).commit();
+        // }
 
         if (version != SystemInformation.getVersion(Main.this)) {
             FileLt.recursiveDelete(new File("sdcard/.mesmangas"));
@@ -140,7 +143,8 @@ public class Main extends RoboActivity {
                     .setTitle(R.string.miseajour)
                     .setMessage(
                             "* reparation de la récupération depuis animes-story suite aux mises à jour du site\n\n* correction d'un bug lors de l'affichage des pages\n\n* ajout d'un site source espagnol\n* Je recherche des personnes désirant m'aider à la traduction de l'application dans d'autres langues\n\n"
-                                    + "* Je cherche aussi un nouveau logo pour l'application, vous pouvez m'envoyer vos idée ;-)").setNeutralButton(R.string.fermer, new DialogInterface.OnClickListener() {
+                                    + "* Je cherche aussi un nouveau logo pour l'application, vous pouvez m'envoyer vos idée ;-)")
+                    .setNeutralButton(R.string.fermer, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putInt("version", SystemInformation.getVersion(Main.this)).commit();
@@ -190,7 +194,7 @@ public class Main extends RoboActivity {
     private class CheckUpdate extends AsyncTask<Void, Void, Boolean> {
         Boolean test;
 
-         protected Boolean doInBackground(Void... arg0) {
+        protected Boolean doInBackground(Void... arg0) {
             if (SystemInformation.getVersionName(Main.this).equals(Web.GetVersionOnMarket(Main.this)) && SystemInformation.getVersionName(Main.this) != "") {
                 test = false;
             } else {
@@ -202,10 +206,10 @@ public class Main extends RoboActivity {
             return test;
         }
 
-         protected void onPostExecute(Boolean result) {
+        protected void onPostExecute(Boolean result) {
             if (test) {
                 DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                     public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                         case DialogInterface.BUTTON_POSITIVE:
                             // Yes button clicked
@@ -220,7 +224,8 @@ public class Main extends RoboActivity {
                 };
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
-                builder.setMessage(getString(R.string.miseajour2)).setPositiveButton(getString(R.string.oui), dialogClickListener).setNegativeButton(getString(R.string.non), dialogClickListener).show();
+                builder.setMessage(getString(R.string.miseajour2)).setPositiveButton(getString(R.string.oui), dialogClickListener)
+                        .setNegativeButton(getString(R.string.non), dialogClickListener).show();
             }
             super.onPostExecute(result);
         }
@@ -351,5 +356,25 @@ public class Main extends RoboActivity {
             break;
         }
     }
+
+    // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // // DATABASE
+    // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+        Uri uri = null;
+        String[] projection = null;
+        String selection = null;
+        String[] selectionArgs = null;
+        String sortOrder = null;
+        return new CursorLoader(this, uri, projection, selection, selectionArgs, sortOrder);
+    }
+
+    @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override public void onLoaderReset(Loader<Cursor> arg0) {}
 
 }
