@@ -124,7 +124,7 @@ public class Afficher extends Activity implements OnClickListener {
         next = (ImageView) findViewById(R.id.imageView3);
         before = (ImageView) findViewById(R.id.imageView2);
 
-        w1.getSettings().setBuiltInZoomControls(true);
+        w1.getSettings().setBuiltInZoomControls(false);
         w1.setInitialScale(0);
         w1.getSettings().setUseWideViewPort(true);
 

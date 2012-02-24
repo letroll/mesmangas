@@ -5,11 +5,15 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+
+import fr.letroll.framework.Notification;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -106,9 +110,14 @@ public class Service extends android.app.Service {
 
         downloaded = 0;
         URL url;
-
+//        String adresse="";
+//        try {
+//            adresse=URLEncoder.encode(aUrl, "UTF-8");
+//        } catch (UnsupportedEncodingException e1) {
+//            e1.printStackTrace();
+//        }
         i.putExtra("url", aUrl);
-
+        Notification.log(tag, aUrl);
         try {
             url = new URL(aUrl);
             HttpURLConnection connection;
