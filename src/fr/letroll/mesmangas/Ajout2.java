@@ -14,10 +14,15 @@ import org.xmlpull.v1.XmlSerializer;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.PixelFormat;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Xml;
@@ -35,6 +40,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import fr.letroll.adapter.DBAdapter;
 import fr.letroll.framework.Notification;
 import fr.letroll.framework.ViewUtils;
 import fr.letroll.framework.Web;
@@ -52,7 +58,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemClickListener, OnScrollListener, TextWatcher {
+public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemClickListener, OnScrollListener, TextWatcher, LoaderManager.LoaderCallbacks<Cursor> {
 
     // composants
     Spinner s1;
@@ -72,12 +78,16 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
     private Miroirs lesMiroirs;
     private Miroir miror;
 
+    // database
+    private DBAdapter db;
+
     private final class RemoveWindow implements Runnable {
 
         public void run() {
             removeWindow();
         }
     }
+
     private RemoveWindow mRemoveWindow = new RemoveWindow();
     Handler mHandler = new Handler();
     private WindowManager mWindowManager;
@@ -86,10 +96,12 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
     private boolean mReady;
     private char mPrevLetter = Character.MIN_VALUE;
 
-    
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ajout);
+
+        db = new DBAdapter(this);
+        db.open();
 
         // // affiche refresh
         // LinearLayout ll = (LinearLayout) findViewById(R.id.actionbar);
@@ -156,8 +168,8 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
 
             public void run() {
                 mReady = true;
-                WindowManager.LayoutParams lp = new WindowManager.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_APPLICATION, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                        | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_APPLICATION,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
                 mWindowManager.addView(mDialogText, lp);
             }
         });
@@ -191,32 +203,32 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
     public void onSiteWithSelect() {
         if (pays.equals("fr")) {
             switch (numsite) {
-                case 0:
-                    miror = new AnimeStory();
-                    break;
-                case 1:
-                    miror = new Dbps();
-                    break;
+            case 0:
+                miror = new AnimeStory();
+                break;
+            case 1:
+                miror = new Dbps();
+                break;
             }
         }
         if (pays.equals("en")) {
             switch (numsite) {
-                case 0:
-                    miror = new MangaAccess();
-                    break;
-                case 1:
-                    miror = new Mangafox();
-                    break;
+            case 0:
+                miror = new MangaAccess();
+                break;
+            case 1:
+                miror = new Mangafox();
+                break;
             }
         }
         if (pays.equals("sp")) {
             switch (numsite) {
-                case 0:
-                    miror = new Animextremist();
-                    break;
-                // case 1:
-                // miror = new Mangafox(path);
-                // break;
+            case 0:
+                miror = new Animextremist();
+                break;
+            // case 1:
+            // miror = new Mangafox(path);
+            // break;
             }
         }
         new getMangaTask().execute();
@@ -240,6 +252,9 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
             // \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\//\\
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("site", miror.getNomDuSite()));
+            //database
+             db.insererUnSite(miror.getNomDuSite(),  miror.getNomDuSite(), "fr", "favicon.png");
+             
             Notification.log(tag, "dessous la une");
             String test = Web.GetHTML("http://letroll.alwaysdata.net/getlist.php", params, "android");
             if (test.length() > 56) {
@@ -290,7 +305,6 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
 
     public class Addlist extends AsyncTask<Void, Void, Boolean> {
 
-        
         protected Boolean doInBackground(Void... arg0) {
             // \\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\ //\\
             List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -300,7 +314,7 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
             params.add(new BasicNameValuePair("list", xml));
             Notification.log(tag, "dessous la 2");
             String test = Web.GetHTML("http://letroll.alwaysdata.net/addlist.php", params, "android");
-//                Notification.log(tag, test);
+            // Notification.log(tag, test);
             if (test.length() > 2) {
                 return true;
             } else {
@@ -378,8 +392,7 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
         remplissage();
     }
 
-    public void onNothingSelected(AdapterView<?> parent) {
-    }
+    public void onNothingSelected(AdapterView<?> parent) {}
 
     public void onItemClick(AdapterView<?> parent, View vue, int position, long id) {
 
@@ -390,20 +403,17 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
         Ajout2.this.finish();
     }
 
-    
     protected void onResume() {
         super.onResume();
         mReady = true;
     }
 
-    
     protected void onPause() {
         super.onPause();
         removeWindow();
         mReady = false;
     }
 
-    
     protected void onDestroy() {
         super.onDestroy();
         mWindowManager.removeView(mDialogText);
@@ -415,8 +425,7 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
             char firstLetter = '0';
             try {
                 firstLetter = lesTitres.get(firstVisibleItem).charAt(0);
-            } catch (Exception e) {
-            }
+            } catch (Exception e) {}
 
             if (!mShowing && firstLetter != mPrevLetter) {
                 mShowing = true;
@@ -429,8 +438,7 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
         }
     }
 
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-    }
+    public void onScrollStateChanged(AbsListView view, int scrollState) {}
 
     private void removeWindow() {
         if (mShowing) {
@@ -439,15 +447,10 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
         }
     }
 
-    
-    public void afterTextChanged(Editable arg0) {
-    }
+    public void afterTextChanged(Editable arg0) {}
 
-    
-    public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-    }
+    public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
 
-    
     public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
         int textlength = e1.getText().length();
         ArrayList<String> arr_sort = new ArrayList<String>();
@@ -463,4 +466,25 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
 
         l1.setAdapter(new ArrayAdapter<String>(Ajout2.this, android.R.layout.simple_list_item_1, arr_sort));
     }
+
+    // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // // DATABASE
+    // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+        Uri uri = null;
+        String[] projection = null;
+        String selection = null;
+        String[] selectionArgs = null;
+        String sortOrder = null;
+        return new CursorLoader(this, uri, projection, selection, selectionArgs, sortOrder);
+    }
+
+    @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override public void onLoaderReset(Loader<Cursor> arg0) {}
+
 }

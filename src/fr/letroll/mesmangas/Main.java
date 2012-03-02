@@ -32,7 +32,7 @@ import fr.letroll.framework.Notification;
 import fr.letroll.framework.SystemInformation;
 import fr.letroll.framework.Web;
 
-public class Main extends RoboFragmentActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class Main extends RoboFragmentActivity{
     private File ls;
 
     @InjectView(R.id.buttonLeft) ImageView before;
@@ -56,7 +56,6 @@ public class Main extends RoboFragmentActivity implements LoaderManager.LoaderCa
     private String path, mail;
     private Boolean policeperso, DEVELOPER_MODE;
     private SharedPreferences preferences;
-    private DBAdapter db;
 
     // view
 
@@ -71,14 +70,6 @@ public class Main extends RoboFragmentActivity implements LoaderManager.LoaderCa
         ls = this.getFilesDir();
         path = ls.getAbsolutePath() + "/mesmangas";
         AppRater.app_launched(this);
-
-        db = new DBAdapter(this);
-        db.open();
-        db.insererUnSite("narutoSite", "naruto.com", "fr", "favicon.png");
-
-        // getSupportLoaderManager().initLoader(0, null, this);
-        // getSupportLoaderManager().restartLoader(0, null, this);
-        // Cursor c = db.recupererLaListeDesSites();
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         policeperso = preferences.getBoolean("policeperso", false);
@@ -208,24 +199,7 @@ public class Main extends RoboFragmentActivity implements LoaderManager.LoaderCa
 
         protected void onPostExecute(Boolean result) {
             if (test) {
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                        case DialogInterface.BUTTON_POSITIVE:
-                            // Yes button clicked
-                            IntentLt.openMarketApp(Main.this);
-                            break;
-
-                        case DialogInterface.BUTTON_NEGATIVE:
-                            // No button clicked
-                            break;
-                        }
-                    }
-                };
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
-                builder.setMessage(getString(R.string.miseajour2)).setPositiveButton(getString(R.string.oui), dialogClickListener)
-                        .setNegativeButton(getString(R.string.non), dialogClickListener).show();
+                IntentLt.openMarketApp(Main.this);
             }
             super.onPostExecute(result);
         }
@@ -356,25 +330,4 @@ public class Main extends RoboFragmentActivity implements LoaderManager.LoaderCa
             break;
         }
     }
-
-    // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // // DATABASE
-    // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
-        Uri uri = null;
-        String[] projection = null;
-        String selection = null;
-        String[] selectionArgs = null;
-        String sortOrder = null;
-        return new CursorLoader(this, uri, projection, selection, selectionArgs, sortOrder);
-    }
-
-    @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-    }
-
-    @Override public void onLoaderReset(Loader<Cursor> arg0) {}
-
 }
