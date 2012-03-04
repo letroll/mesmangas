@@ -38,7 +38,7 @@ public class ListPlugin extends ListActivity implements OnItemLongClickListener 
         itemAdapter = new SimpleAdapter(this, services, R.layout.services_row, new String[] { KEY_PKG, KEY_SERVICENAME, KEY_ACTIONS, KEY_CATEGORIES }, new int[] { R.id.pkg, R.id.servicename, R.id.actions, R.id.categories });
         setListAdapter(itemAdapter);
 
-         activateUnknowSource();
+        activateUnknowSource();
 
         lv = getListView();
         lv.setOnItemLongClickListener(this);
@@ -92,6 +92,10 @@ public class ListPlugin extends ListActivity implements OnItemLongClickListener 
         ListPlugin.this.finish();
     }
 
+    public void UpdatePlugin(View v) {
+        Notification.toastc(context, "toto");
+    }
+
     protected void onListItemClick(ListView l, View v, int position, long id) {
         Notification.log(tag, "onListItemClick: " + position);
         String category = categories.get(position);
@@ -109,12 +113,11 @@ public class ListPlugin extends ListActivity implements OnItemLongClickListener 
         Intent baseIntent = new Intent(ACTION_PICK_PLUGIN);
         baseIntent.setFlags(Intent.FLAG_DEBUG_LOG_RESOLUTION);
         List<ResolveInfo> list = packageManager.queryIntentServices(baseIntent, PackageManager.GET_RESOLVED_FILTER);
-        Notification.log(tag, "fillPluginList: " + list);
         for (int i = 0; i < list.size(); ++i) {
             ResolveInfo info = list.get(i);
             ServiceInfo sinfo = info.serviceInfo;
             IntentFilter filter = info.filter;
-            Notification.log(tag, "fillPluginList: i: " + i + "; sinfo: " + sinfo + ";filter: " + filter);
+            Notification.log(tag, "taille de la liste de Plugin: " + i + 1 + "; sinfo: " + sinfo);
             if (sinfo != null) {
                 HashMap<String, String> item = new HashMap<String, String>();
                 item.put(KEY_PKG, sinfo.packageName);
@@ -156,8 +159,6 @@ public class ListPlugin extends ListActivity implements OnItemLongClickListener 
                 services.add(item);
             }
         }
-        Notification.log(tag, "services: " + services);
-        Notification.log(tag, "categories: " + categories);
     }
 
     // constant
@@ -214,6 +215,7 @@ public class ListPlugin extends ListActivity implements OnItemLongClickListener 
         Notification.log(tag, "package:" + pack);
 
         IntentLt.uninstallApplication(context, pack);
+        updateList();
         return true;
     }
 

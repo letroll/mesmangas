@@ -1,27 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-     xmlns:android="http://schemas.android.com/apk/res/android"
-     android:layout_width="fill_parent"
-     android:layout_height="match_parent"
-     android:orientation="vertical">
- 
-     <TextView android:id="@+id/pkg"
-         android:textSize="12dp"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content"/>
- 
-     <TextView android:id="@+id/servicename"
-         android:textSize="12dp"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content"/>
-
-     <TextView android:id="@+id/actions"
-         android:textSize="12dp"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content"/>
-     <TextView
-         android:id="@+id/categories"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content"
-         android:textSize="12dp" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+        <ImageView
+            android:id="@+id/pluginicon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="UpdatePlugin"
+            android:src="@drawable/dashboard_button_france" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+        <TextView
+            android:id="@+id/pkg"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/servicename"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/actions"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/categories"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+        <ImageView
+            android:id="@+id/pluginlangicon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/dashboard_button_france" />
+    </LinearLayout>
 </LinearLayout>

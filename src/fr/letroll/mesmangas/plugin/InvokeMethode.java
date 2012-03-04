@@ -104,10 +104,6 @@ public class InvokeMethode extends Activity implements OnClickListener {
             Notification.log(tag, "onServiceDisconnected");
         }
     }
-
-    @Override public void onClick(View v) {
-        calculate();
-    };
     
     public void onActionBarButtonBackClick(View v) {
         InvokeMethode.this.finish();
@@ -121,6 +117,11 @@ public class InvokeMethode extends Activity implements OnClickListener {
     public void backhome(View v) {
         this.setResult(2);
         InvokeMethode.this.finish();
+    }
+
+    @Override
+    public void onClick(View vue) {
+        calculate();
     }
 
 }
