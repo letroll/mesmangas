@@ -108,5 +108,19 @@ public class InvokeMethode extends Activity implements OnClickListener {
     @Override public void onClick(View v) {
         calculate();
     };
+    
+    public void onActionBarButtonBackClick(View v) {
+        InvokeMethode.this.finish();
+    }
+    
+    public void onActionBarButtonExitClick(View v) {
+        this.setResult(1);
+        InvokeMethode.this.finish();
+    }
+    
+    public void backhome(View v) {
+        this.setResult(2);
+        InvokeMethode.this.finish();
+    }
 
 }

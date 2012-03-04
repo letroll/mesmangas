@@ -14,34 +14,34 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.pm.ServiceInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
+import fr.letroll.framework.IntentLt;
 import fr.letroll.framework.Notification;
-import fr.letroll.framework.StringLt;
-import fr.letroll.mesmangas.Ajout1;
 import fr.letroll.mesmangas.R;
-import fr.letroll.mesmangas.R.id;
-import fr.letroll.mesmangas.R.layout;
 
-public class ListPlugin extends ListActivity {
-    public static final String ACTION_PICK_PLUGIN = "letroll.intent.action.PICK_PLUGIN";
-    public final String tag = this.getClass().getSimpleName();
-    static final String KEY_PKG = "pkg";
-    static final String KEY_SERVICENAME = "servicename";
-    static final String KEY_ACTIONS = "actions";
-    static final String KEY_CATEGORIES = "categories";
-    static final String BUNDLE_EXTRAS_CATEGORY = "category";
+public class ListPlugin extends ListActivity implements OnItemLongClickListener {
 
-    /** Called when the activity is first created. */
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listplugin);
+        context = this;
+
         fillPluginList();
-        itemAdapter = new SimpleAdapter(this, services, R.layout.services_row, new String[] { KEY_PKG, KEY_SERVICENAME, KEY_ACTIONS, KEY_CATEGORIES }, new int[] { R.id.pkg,
-                R.id.servicename, R.id.actions, R.id.categories });
+        itemAdapter = new SimpleAdapter(this, services, R.layout.services_row, new String[] { KEY_PKG, KEY_SERVICENAME, KEY_ACTIONS, KEY_CATEGORIES }, new int[] { R.id.pkg, R.id.servicename, R.id.actions, R.id.categories });
         setListAdapter(itemAdapter);
+
+         activateUnknowSource();
+
+        lv = getListView();
+        lv.setOnItemLongClickListener(this);
 
         packageBroadcastReceiver = new PackageBroadcastReceiver();
         packageFilter = new IntentFilter();
@@ -61,8 +61,7 @@ public class ListPlugin extends ListActivity {
 
     private void updateList() {
         fillPluginList();
-        itemAdapter = new SimpleAdapter(this, services, R.layout.services_row, new String[] { KEY_PKG, KEY_SERVICENAME, KEY_ACTIONS, KEY_CATEGORIES }, new int[] { R.id.pkg,
-                R.id.servicename, R.id.actions, R.id.categories });
+        itemAdapter = new SimpleAdapter(this, services, R.layout.services_row, new String[] { KEY_PKG, KEY_SERVICENAME, KEY_ACTIONS, KEY_CATEGORIES }, new int[] { R.id.pkg, R.id.servicename, R.id.actions, R.id.categories });
         setListAdapter(itemAdapter);
         Notification.log(tag, "fillPluginList()");
     }
@@ -82,19 +81,24 @@ public class ListPlugin extends ListActivity {
     public void onActionBarButtonBackClick(View v) {
         ListPlugin.this.finish();
     }
-    
+
     public void onActionBarButtonExitClick(View v) {
         this.setResult(1);
         ListPlugin.this.finish();
     }
-    
+
+    public void backhome(View v) {
+        this.setResult(2);
+        ListPlugin.this.finish();
+    }
+
     protected void onListItemClick(ListView l, View v, int position, long id) {
         Notification.log(tag, "onListItemClick: " + position);
         String category = categories.get(position);
         if (category.length() > 0) {
-            Intent intent = new Intent(ListPlugin.this,InvokeMethode.class);
+            Intent intent = new Intent(ListPlugin.this, InvokeMethode.class);
             intent.putExtra(BUNDLE_EXTRAS_CATEGORY, category);
-            startActivity(intent);
+            startActivityForResult(intent, 100);
         }
     }
 
@@ -114,7 +118,9 @@ public class ListPlugin extends ListActivity {
             if (sinfo != null) {
                 HashMap<String, String> item = new HashMap<String, String>();
                 item.put(KEY_PKG, sinfo.packageName);
-                item.put(KEY_SERVICENAME, StringLt.lastSegment(sinfo.name, '.'));
+                // item.put(KEY_SERVICENAME, StringLt.lastSegment(sinfo.name,
+                // '.'));
+                item.put(KEY_SERVICENAME, sinfo.name);
                 String firstCategory = null;
                 if (filter != null) {
                     StringBuilder actions = new StringBuilder();
@@ -133,8 +139,13 @@ public class ListPlugin extends ListActivity {
                             categories.append(",");
                         categories.append(category);
                     }
-                    item.put(KEY_ACTIONS, new String(StringLt.lastSegment(actions.toString(), '.')));
-                    item.put(KEY_CATEGORIES, new String(StringLt.lastSegment(categories.toString(), '.')));
+                    // item.put(KEY_ACTIONS, new
+                    // String(StringLt.lastSegment(actions.toString(), '.')));
+                    // item.put(KEY_CATEGORIES, new
+                    // String(StringLt.lastSegment(categories.toString(),
+                    // '.')));
+                    item.put(KEY_ACTIONS, new String(actions));
+                    item.put(KEY_CATEGORIES, new String(categories));
                 } else {
                     item.put(KEY_ACTIONS, "<null>");
                     item.put(KEY_CATEGORIES, "<null>");
@@ -149,11 +160,24 @@ public class ListPlugin extends ListActivity {
         Notification.log(tag, "categories: " + categories);
     }
 
+    // constant
+    static final String ACTION_PICK_PLUGIN = "letroll.intent.action.PICK_PLUGIN";
+    final String tag = this.getClass().getSimpleName();
+    static final String KEY_PKG = "pkg";
+    static final String KEY_SERVICENAME = "servicename";
+    static final String KEY_ACTIONS = "actions";
+    static final String KEY_CATEGORIES = "categories";
+    static final String BUNDLE_EXTRAS_CATEGORY = "category";
+
+    // variable
+    private Context context;
     private PackageBroadcastReceiver packageBroadcastReceiver;
     private IntentFilter packageFilter;
     private ArrayList<HashMap<String, String>> services;
     private ArrayList<String> categories;
     private SimpleAdapter itemAdapter;
+    // view
+    ListView lv;
 
     class PackageBroadcastReceiver extends BroadcastReceiver {
         public final String tag = this.getClass().getSimpleName();
@@ -162,6 +186,46 @@ public class ListPlugin extends ListActivity {
             Notification.log(tag, "onReceive: " + intent);
             services.clear();
             updateList();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+        case 1:
+            this.setResult(1);
+        case 2:
+            ListPlugin.this.finish();
+            break;
+        }
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> groupview, View view, int pos, long id) {
+
+        TextView tv = (TextView) view.findViewById(R.id.servicename);
+        String pack = tv.getText().toString();
+
+        int pos2 = pack.lastIndexOf('.');
+        Notification.log(tag, "pos ici:" + pos2);
+
+        pack = pack.substring(0, pos2);
+        Notification.log(tag, "package:" + pack);
+
+        IntentLt.uninstallApplication(context, pack);
+        return true;
+    }
+
+    public void activateUnknowSource() {
+        int result = Settings.Secure.getInt(getContentResolver(), Settings.Secure.INSTALL_NON_MARKET_APPS, 0);
+        if (result == 0) {
+            // show some dialog here
+            // ...
+            // and may be show application settings dialog manually
+            Intent intent = new Intent();
+            intent.setAction(Settings.ACTION_APPLICATION_SETTINGS);
+            startActivity(intent);
         }
     }
 

@@ -160,8 +160,6 @@ public class Maliste1 extends Activity implements OnItemLongClickListener, OnIte
         switch (resultCode) {
         case 1:
             this.setResult(1);
-            Maliste1.this.finish();
-            break;
         case 2:
             Maliste1.this.finish();
             break;

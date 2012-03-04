@@ -5,21 +5,18 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-
-import fr.letroll.framework.Notification;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
+import fr.letroll.framework.Notification;
 
 public class Service extends android.app.Service {
 
@@ -94,9 +91,9 @@ public class Service extends android.app.Service {
                 if (download(mDownloads.get(0))) {
                     // succes = true;
                     mDownloads.remove(0);
-                    // Toast.makeText(getApplicationContext(), "Réussi", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(getApplicationContext(), "Rï¿½ussi", Toast.LENGTH_SHORT).show();
                 } else {
-                    // if(succes)Toast.makeText(getApplicationContext(), "Raté", Toast.LENGTH_SHORT).show();
+                    // if(succes)Toast.makeText(getApplicationContext(), "Ratï¿½", Toast.LENGTH_SHORT).show();
                     // succes = false;
 
                 }

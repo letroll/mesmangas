@@ -21,7 +21,7 @@ import fr.letroll.framework.FileLt;
 import fr.letroll.framework.Notification;
 
 public class AfficherSd extends Activity implements OnClickListener {
-    private String file, chemin, pub;
+    private String chemin, pub;
     private int nbpages, pageEnCour, orientation, zoom;
     private File monDossierManga;
     private SharedPreferences preferences;
@@ -43,7 +43,6 @@ public class AfficherSd extends Activity implements OnClickListener {
         }
 
         chemin = this.getIntent().getExtras().getString("folder");
-        file = this.getIntent().getExtras().getString("file");
 
         zoom = 0;
 

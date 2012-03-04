@@ -38,7 +38,7 @@
 	<string name="sivousaimez">If you enjoy using </string>
 	<string name="mercipourvotresoutien">, please take a moment to rate it. Thanks for your
 		support!</string>
-	<string name="contacterledev">Contact the developer</string>
+	<string name="plugin">plugin</string>
 	<string name="chargement">Loading</string>
 	<string name="fermer">close</string>
 	<string name="miseajour">update</string>
@@ -55,4 +55,6 @@
 	<string name="oui">yes</string>
 	<string name="non">no</string>
 	<string name="pas2chapitredisponible">no chapters available on the site unfortunately, the manga will be removed from your favorites</string>
+	<string name="buttonleft">buttonLeft</string>
+	<string name="buttonright">buttonRight</string>
 </resources>

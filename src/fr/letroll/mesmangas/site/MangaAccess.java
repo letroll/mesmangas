@@ -1,6 +1,5 @@
 package fr.letroll.mesmangas.site;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 

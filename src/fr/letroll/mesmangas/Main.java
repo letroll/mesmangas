@@ -7,50 +7,55 @@ import java.util.List;
 
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.InjectView;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ViewFlipper;
-import fr.letroll.adapter.DBAdapter;
 import fr.letroll.framework.FileLt;
 import fr.letroll.framework.IntentLt;
 import fr.letroll.framework.Notification;
 import fr.letroll.framework.SystemInformation;
 import fr.letroll.framework.Web;
+import fr.letroll.mesmangas.plugin.ListPlugin;
 
-public class Main extends RoboFragmentActivity{
+public class Main extends RoboFragmentActivity {
     private File ls;
 
-    @InjectView(R.id.buttonLeft) ImageView before;
-    @InjectView(R.id.buttonRight) ImageView next;
-    @InjectView(R.id.flipper) ViewFlipper mFlipper;
-    @InjectView(R.id.actionbar) LinearLayout ll;
-    @InjectView(R.id.btn_title_back) ImageView imback;
-    @InjectView(R.id.action_one_button) Button b1;
-    @InjectView(R.id.action_two_button) Button b2;
-    @InjectView(R.id.action_three_button) Button b3;
-    @InjectView(R.id.action_four_button) Button b4;
-    @InjectView(R.id.action_five_button) Button b5;
-    @InjectView(R.id.action_six_button) Button b6;
+    @InjectView(R.id.buttonLeft)
+    ImageView before;
+    @InjectView(R.id.buttonRight)
+    ImageView next;
+    @InjectView(R.id.flipper)
+    ViewFlipper mFlipper;
+    @InjectView(R.id.actionbar)
+    LinearLayout ll;
+    @InjectView(R.id.btn_title_back)
+    ImageView imback;
+    @InjectView(R.id.action_one_button)
+    Button b1;
+    @InjectView(R.id.action_two_button)
+    Button b2;
+    @InjectView(R.id.action_three_button)
+    Button b3;
+    @InjectView(R.id.action_four_button)
+    Button b4;
+    @InjectView(R.id.action_five_button)
+    Button b5;
+    @InjectView(R.id.action_six_button)
+    Button b6;
     // @InjectView(R.id.textView1) TextView t2;
     // @InjectView(R.id.textView2) TextView t1;
 
     // constants
-    private static final String tag = "MesMangas";
+    // private static final String tag = "MesMangas";
     private static final int PICKFILE_RESULT_CODE = 5000;
     // variables
     private String path, mail;
@@ -74,7 +79,7 @@ public class Main extends RoboFragmentActivity{
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         policeperso = preferences.getBoolean("policeperso", false);
         mail = preferences.getString("mail", "");
-        int version = preferences.getInt("version", 0);
+        // int version = preferences.getInt("version", 0);
 
         DEVELOPER_MODE = preferences.getBoolean("debug", false);
         if (DEVELOPER_MODE) {
@@ -119,36 +124,40 @@ public class Main extends RoboFragmentActivity{
         // });
         // TextView t2= (TextView) monTuto.findViewById(R.id.textView1);
         // TextView t1= (TextView) monTuto.findViewById(R.id.textView2);
-        // t1.setText("(cette application nécessite un accés à internet, l'utilisation du wifi est conseillé.) Bonjour et bienvenue dans mesmangas, faites défiler cette page vers le haut pour apprendre à utiliser l'application.pour commencer, appuyer sur ");
-        // t2.setText("selectionner la langue à votre convenance, et enfin patienté. L'application Mesmangas va chercher tous les titres disponibles sur le site internet sélectionné. Votre manga trouvé, appuyer sur son nom pour l'ajouter à votre liste de lecture. Il ne vous reste plus qu'à regarder vos manga en appuyant sur");
+        // t1.setText("(cette application nï¿½cessite un accï¿½s ï¿½ internet, l'utilisation du wifi est conseillï¿½.) Bonjour et bienvenue dans mesmangas, faites dï¿½filer cette page vers le haut pour apprendre ï¿½ utiliser l'application.pour commencer, appuyer sur ");
+        // t2.setText("selectionner la langue ï¿½ votre convenance, et enfin patientï¿½. L'application Mesmangas va chercher tous les titres disponibles sur le site internet sï¿½lectionnï¿½. Votre manga trouvï¿½, appuyer sur son nom pour l'ajouter ï¿½ votre liste de lecture. Il ne vous reste plus qu'ï¿½ regarder vos manga en appuyant sur");
         // monTuto.show();
         // SharedPreferences.Editor editor = preferences.edit();
         // editor.putBoolean("tuto1", false).commit();
         // }
 
-        if (version != SystemInformation.getVersion(Main.this)) {
-            FileLt.recursiveDelete(new File("sdcard/.mesmangas"));
-            FileLt.recursiveDelete(new File(path));
-            AlertDialog alerte = new AlertDialog.Builder(Main.this)
-                    .setIcon(R.drawable.ic_title_refresh)
-                    .setTitle(R.string.miseajour)
-                    .setMessage(
-                            "* reparation de la récupération depuis animes-story suite aux mises à jour du site\n\n* correction d'un bug lors de l'affichage des pages\n\n* ajout d'un site source espagnol\n* Je recherche des personnes désirant m'aider à la traduction de l'application dans d'autres langues\n\n"
-                                    + "* Je cherche aussi un nouveau logo pour l'application, vous pouvez m'envoyer vos idée ;-)")
-                    .setNeutralButton(R.string.fermer, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            SharedPreferences.Editor editor = preferences.edit();
-                            editor.putInt("version", SystemInformation.getVersion(Main.this)).commit();
-                            editor.putString("mail", SystemInformation.getMailsUser(Main.this).get(0)).commit();
-                        }
-                    }).create();
-            alerte.show();
-        }
+        // if (version != SystemInformation.getVersion(Main.this)) {
+        // FileLt.recursiveDelete(new File("sdcard/.mesmangas"));
+        // FileLt.recursiveDelete(new File(path));
+        // AlertDialog alerte = new AlertDialog.Builder(Main.this)
+        // .setIcon(R.drawable.ic_title_refresh)
+        // .setTitle(R.string.miseajour)
+        // .setMessage(
+        // "* reparation de la rï¿½cupï¿½ration depuis animes-story suite aux mises ï¿½ jour du site\n\n* correction d'un bug lors de l'affichage des pages\n\n* ajout d'un site source espagnol\n* Je recherche des personnes dï¿½sirant m'aider ï¿½ la traduction de l'application dans d'autres langues\n\n"
+        // +
+        // "* Je cherche aussi un nouveau logo pour l'application, vous pouvez m'envoyer vos idï¿½e ;-)")
+        // .setNeutralButton(R.string.fermer, new
+        // DialogInterface.OnClickListener() {
+        // public void onClick(DialogInterface dialog, int whichButton) {
+        // SharedPreferences.Editor editor = preferences.edit();
+        // editor.putInt("version",
+        // SystemInformation.getVersion(Main.this)).commit();
+        // editor.putString("mail",
+        // SystemInformation.getMailsUser(Main.this).get(0)).commit();
+        // }
+        // }).create();
+        // alerte.show();
+        // }
 
-        else {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putInt("version", 0).commit();
-        }
+        // else {
+        // SharedPreferences.Editor editor = preferences.edit();
+        // editor.putInt("version", 0).commit();
+        // }
 
         if (policeperso) {
             Typeface tf = Typeface.createFromAsset(getAssets(), "Another.ttf");
@@ -238,17 +247,8 @@ public class Main extends RoboFragmentActivity{
     }
 
     public void onActionSendClick(View v) {
-        /* Create the Intent */
-        final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-
-        /* Fill it with Data */
-        emailIntent.setType("plain/text");
-        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "julien.quievreux@gmail.com" });
-        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Mesmangas");
-        // emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Text");
-
-        /* Send it off to the Activity-Chooser */
-        this.startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+        Intent intentPlugin = new Intent(this, ListPlugin.class);
+        this.startActivityForResult(intentPlugin, 6000);
     }
 
     public void onActionBarButtonClick(View v) {
@@ -259,27 +259,20 @@ public class Main extends RoboFragmentActivity{
         Main.this.finish();
     }
 
-    public void onActionBarButtonBackClick(View v) {}
+    public void onActionBarButtonBackClick(View v) {
+    }
 
-    public void backhome(View v) {}
+    public void backhome(View v) {
+    }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
         case 1000:
-            if (resultCode == 1)
-                Main.this.finish();
-
-            break;
         case 2000:
-            if (resultCode == 1)
-                Main.this.finish();
-            break;
         case 3000:
-            if (resultCode == 1)
-                Main.this.finish();
-            break;
         case 4000:
+        case 6000:
             if (resultCode == 1)
                 Main.this.finish();
             break;

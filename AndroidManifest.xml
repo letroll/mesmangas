@@ -40,5 +40,7 @@
             android:name="com.google.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation" />
         <service android:name="fr.letroll.downloadservice.Service" />
+        <activity android:name=".plugin.ListPlugin"></activity>
+        <activity android:name=".plugin.InvokeMethode"></activity>
     </application>
 </manifest>

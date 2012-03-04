@@ -41,7 +41,7 @@
 	<string name="mercipourvotresoutien">, s\'il vous plait prenez un moment pour voter.
 		Merci pour votre soutien!
 	</string>
-	<string name="contacterledev">Contacter le développeur</string>
+	<string name="plugin">plug-in</string>
 	<string name="chargement">Chargement</string>
 	<string name="fermer">fermer</string>
 
@@ -65,4 +65,6 @@
 <!-- 		<item >automatique</item> -->
 <!-- 	</string-array> -->
 	<string name="pas2chapitredisponible">pas de chapitre disponible sur le site malheureusement, le manga va être supprimé de vos favoris</string>
+		<string name="buttonleft">buttonLeft</string>
+	<string name="buttonright">buttonRight</string>
 </resources>

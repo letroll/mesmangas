@@ -1,61 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">mesmangas</string>
-	<string name="ajout">añadir</string>
-	<string name="afficher">mostrar</string>
-	<string name="vider">vaciar la caché</string>
-	<string name="preferences">preferencias</string>
-	<string name="affichersd">pantalla de la sd (Beta)</string>
-	<string name="francais">Francés</string>
-	<string name="anglais">Inglés</string>
-	<string name="partager">compartir aplicación</string>
-	<string name="netnecessaire">acceso a Internet es necesario</string>
-	<string name="imagenondisponible">imagen disponibles:-s</string>
-	<string name="recuperationfinie">la recuperación de más de</string>
-	<string name="dernierepage">La última página del capítulo</string>
-	<string name="premierepage">primera página del capítulo</string>
-	<string name="pasdepage">no la página para mostrar lo siento</string>
-	<string name="selectionpremierepage">Seleccione la imagen deseada del capítulo</string>
-	<string name="vidagecache">de vaciado de caché</string>
-	<string name="appuislongsurmangapoursuppr">Para apoyar mucho de una manga para eliminar
-	</string>
-	<string name="mangasupprime">manga eliminado</string>
-	<string name="appuislongsurchapitrepoursuppr">Para apoyar un extenso capítulo sobre la
-		eliminado
-	</string>
-	<string name="problemelorsduchargement">Se produjo un problema durante la carga</string>
-	<string name="paysage">paisaje</string>
-	<string name="automatique">automático</string>
-	<string name="active">activado</string>
-	<string name="desactive">discapacitado</string>
-	<string name="pub">anuncio</string>
-	<string name="pdtlalecture">durante la reproducción</string>
-	<string name="astuces">consejos</string>
-	<string name="pleinecran">pantalla completa</string>
-	<string name="glisser">arrastrar para cambiar la página (beta)</string>
-	<string name="policeperso">La policía utiliza un personal</string>
-	<string name="evaluer"> evaluar </string>
-	<string name="remindmelater">Pido de nuevo más tarde</string>
-	<string name="nonmerci">no, gracias</string>
-	<string name="sivousaimez">Si te gusta usar</string>
-	<string name="mercipourvotresoutien">, que por favor tome un momento para votar.
+    <string name="app_name">mesmangas</string>
+    <string name="ajout">añadir</string>
+    <string name="afficher">mostrar</string>
+    <string name="vider">vaciar la caché</string>
+    <string name="preferences">preferencias</string>
+    <string name="affichersd">pantalla de la sd (Beta)</string>
+    <string name="francais">Francés</string>
+    <string name="anglais">Inglés</string>
+    <string name="partager">compartir aplicación</string>
+    <string name="netnecessaire">acceso a Internet es necesario</string>
+    <string name="imagenondisponible">imagen disponibles:-s</string>
+    <string name="recuperationfinie">la recuperación de más de</string>
+    <string name="dernierepage">La última página del capítulo</string>
+    <string name="premierepage">primera página del capítulo</string>
+    <string name="pasdepage">no la página para mostrar lo siento</string>
+    <string name="selectionpremierepage">Seleccione la imagen deseada del capítulo</string>
+    <string name="vidagecache">de vaciado de caché</string>
+    <string name="appuislongsurmangapoursuppr">Para apoyar mucho de una manga para eliminar</string>
+    <string name="mangasupprime">manga eliminado</string>
+    <string name="appuislongsurchapitrepoursuppr">Para apoyar un extenso capítulo sobre la
+		eliminado</string>
+    <string name="problemelorsduchargement">Se produjo un problema durante la carga</string>
+    <string name="paysage">paisaje</string>
+    <string name="automatique">automático</string>
+    <string name="active">activado</string>
+    <string name="desactive">discapacitado</string>
+    <string name="pub">anuncio</string>
+    <string name="pdtlalecture">durante la reproducción</string>
+    <string name="astuces">consejos</string>
+    <string name="pleinecran">pantalla completa</string>
+    <string name="glisser">arrastrar para cambiar la página (beta)</string>
+    <string name="policeperso">La policía utiliza un personal</string>
+    <string name="evaluer"> evaluar </string>
+    <string name="remindmelater">Pido de nuevo más tarde</string>
+    <string name="nonmerci">no, gracias</string>
+    <string name="sivousaimez">Si te gusta usar</string>
+    <string name="mercipourvotresoutien">, que por favor tome un momento para votar.
 		Gracias
 		por tu apoyo!</string>
-	<string name="contacterledev">Contacto con el desarrollador</string>
-	<string name="chargement">de carga</string>
-	<string name="fermer">cerca</string>
-	<string name="miseajour">actualización</string>
-	<string name="ordredeschapitres">Orden de los capítulos</string>
-	<string name="normal">normal</string>
-	<string name="inverse">revés</string>
-	<string name="afficherlesite">Ver página web</string>
-	<string name="sdnecessaire">Esta aplicación requiere una tarjeta de memoria
+    <string name="plugin">plug-in</string>
+    <string name="chargement">de carga</string>
+    <string name="fermer">cerca</string>
+    <string name="miseajour">actualización</string>
+    <string name="ordredeschapitres">Orden de los capítulos</string>
+    <string name="normal">normal</string>
+    <string name="inverse">revés</string>
+    <string name="afficherlesite">Ver página web</string>
+    <string name="sdnecessaire">Esta aplicación requiere una tarjeta de memoria
 		(SD) para funcionar</string>
-	<string name="rechercher">búsqueda</string>
-	<string name="espagnole">Español</string>
-	<string name="miseajour2">Una actualización de la aplicación está disponible!
+    <string name="rechercher">búsqueda</string>
+    <string name="espagnole">Español</string>
+    <string name="miseajour2">Una actualización de la aplicación está disponible!
 		Actualización?</string>
-	<string name="oui">sí</string>
-	<string name="non">no</string>
-	<string name="pas2chapitredisponible">hay no capítulos disponibles en el sitio por desgracia, el manga será eliminado de tus favoritos</string>
+    <string name="oui">sí</string>
+    <string name="non">no</string>
+    <string name="pas2chapitredisponible">hay no capítulos disponibles en el sitio por desgracia, el manga será eliminado de tus favoritos</string>
+    <string name="buttonleft">buttonLeft</string>
+    <string name="buttonright">buttonRight</string>
 </resources>
