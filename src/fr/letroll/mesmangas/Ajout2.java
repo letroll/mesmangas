@@ -59,7 +59,6 @@ import fr.letroll.mesmangas.parcelle.Manga;
 import fr.letroll.mesmangas.parcelle.Mesmangas;
 import fr.letroll.mesmangas.parcelle.Miroir;
 import fr.letroll.mesmangas.parcelle.Miroirs;
-import fr.letroll.mesmangas.parcelle.Site;
 import fr.letroll.mesmangas.plugin.ISite;
 import fr.letroll.mesmangas.site.Animextremist;
 import fr.letroll.mesmangas.site.MangaAccess;
@@ -171,7 +170,6 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
 		// ##### plugin #####
 		fillPluginList();
 		// ##### plugin #####		
-		
 		
 		if (maSauvegarde.exists()) {
 			mesmangas = monUtilitaire.deserializeObject();
