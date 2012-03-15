@@ -2,6 +2,7 @@ package fr.letroll.mesmangas.plugin;
 
 interface ISite {
 	int getPid();
+	String getCountry();
 	boolean isMe(in String mUrl);
 	List<String> getMangaList();
 	String getNomEncode(in String nomManga);
