@@ -22,6 +22,8 @@ import fr.letroll.mesmangas.R;
 
 public class InvokeMethode extends Activity implements OnClickListener {
 
+	InternetTask internetTask;
+	
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent i = getIntent();
@@ -30,10 +32,15 @@ public class InvokeMethode extends Activity implements OnClickListener {
         }
         setContentView(R.layout.serviceview);
         bindOpService();
+        
+        internetTask = new InternetTask();
+        
         textField = (EditText) findViewById(R.id.editText1);
         textField.setOnClickListener(this);
         l1 = (ListView) findViewById(R.id.listView1);
 
+        
+        
     }
 
     public void onDestroy() {
@@ -56,7 +63,7 @@ public class InvokeMethode extends Activity implements OnClickListener {
     }
 
     private void calculate() {
-        new InternetTask().execute();
+    	internetTask.execute();
     }
 
     private EditText textField;
