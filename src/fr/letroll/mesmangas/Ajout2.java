@@ -325,6 +325,11 @@ public class Ajout2 extends Activity implements OnItemSelectedListener, OnItemCl
             } catch (RemoteException e) {
 	            e.printStackTrace();
             }
+			if(lesTitres==null){
+				lesTitres= new ArrayList<String>();
+				lesTitres.add("rien trouvé");
+				l1.setOnItemClickListener(null);
+			}
 			return true;
 		}
 
